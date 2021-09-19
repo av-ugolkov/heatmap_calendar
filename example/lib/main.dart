@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_calendar.dart';
+import 'package:heatmap_calendar/time_utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,8 +36,43 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-        child: const HeatmapCalendar(),
+      body: Center(
+        child: HeatMapCalendar(
+          input: {
+            TimeUtils.removeTime(
+                DateTime.now().subtract(const Duration(days: 3))): 5,
+            TimeUtils.removeTime(
+                DateTime.now().subtract(const Duration(days: 2))): 35,
+            TimeUtils.removeTime(
+                DateTime.now().subtract(const Duration(days: 1))): 14,
+            TimeUtils.removeTime(DateTime.now()): 5,
+          },
+          colorThresholds: {
+            1: Colors.green.shade100,
+            10: Colors.green.shade300,
+            30: Colors.green.shade500
+          },
+          weekDaysLabels: const ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+          monthsLabels: const [
+            "",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          squareSize: 20.0,
+          textOpacity: 0.3,
+          labelTextColor: Colors.blueGrey,
+          dayTextColor: Colors.blue.shade500,
+        ),
       ),
     );
   }
