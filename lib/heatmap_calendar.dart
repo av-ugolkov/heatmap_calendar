@@ -17,6 +17,9 @@ class HeatMapCalendar extends StatefulWidget {
   /// Defaults to [TimeUtils.defaultMonthsLabels]
   final List<String> monthsLabels;
 
+  final DateTime startDate;
+  final DateTime finishDate;
+
   /// The inputs that will fill the calendar with data
   final Map<DateTime, int> input;
 
@@ -42,8 +45,12 @@ class HeatMapCalendar extends StatefulWidget {
   /// Helps avoiding overspacing issues
   final double safetyMargin;
 
+  final int firstDayWeek;
+
   const HeatMapCalendar(
       {Key? key,
+      required this.startDate,
+      required this.finishDate,
       required this.input,
       required this.colorThresholds,
       this.weekDaysLabels = TimeUtils.defaultWeekLabels,
@@ -52,13 +59,12 @@ class HeatMapCalendar extends StatefulWidget {
       this.textOpacity = 0.2,
       this.labelTextColor = Colors.black,
       this.dayTextColor = Colors.black,
-      this.safetyMargin = 0})
+      this.safetyMargin = 5,
+      this.firstDayWeek = DateTime.monday})
       : super(key: key);
 
   @override
-  HeatMapCalendarState createState() {
-    return HeatMapCalendarState();
-  }
+  HeatMapCalendarState createState() => HeatMapCalendarState();
 }
 
 class HeatMapCalendarState extends State<HeatMapCalendar> {
@@ -76,12 +82,11 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
   /// Calculates the right amount of columns to create based on [maxWidth]
   ///
   /// returns the number of columns that the widget should have
-  int getColumnsToCreate(double maxWidth) {
+  int _getColumnsToCreate(double maxWidth) {
     assert(maxWidth > (2 * (HeatMapCalendar.edgeSize + widget.squareSize)));
 
-    // The given size of a square + the size of the margin
-    final double widgetWidth = widget.squareSize + HeatMapCalendar.edgeSize;
-    return (maxWidth - widget.safetyMargin) ~/ widgetWidth;
+    var delta = widget.finishDate.difference(widget.startDate);
+    return delta.inDays ~/ 7;
   }
 
   @override
@@ -109,8 +114,12 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                   currentOpacity: currentOpacity,
                   monthLabels: widget.monthsLabels,
                   dayTextColor: widget.dayTextColor,
-                  columnsToCreate: getColumnsToCreate(constraints.maxWidth) - 1,
+                  columnsToCreate:
+                      _getColumnsToCreate(constraints.maxWidth) - 1,
                   date: DateTime.now(),
+                  startDate: widget.startDate,
+                  finishDate: widget.finishDate,
+                  firstDayWeek: widget.firstDayWeek,
                 )
               ],
             ),

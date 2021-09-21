@@ -5,22 +5,17 @@ import 'package:heatmap_calendar/time_utils.dart';
 
 class WeekColumns extends StatelessWidget {
   final double squareSize;
-
   final Color labelTextColor;
-
   final Map<DateTime, int> input;
-
   final Map<int, Color> colorThresholds;
-
   final double currentOpacity;
-
   final List<String> monthLabels;
-
   final Color dayTextColor;
-
   final int columnsToCreate;
-
+  final DateTime startDate;
+  final DateTime finishDate;
   final DateTime date;
+  final int firstDayWeek;
 
   const WeekColumns(
       {Key? key,
@@ -32,13 +27,16 @@ class WeekColumns extends StatelessWidget {
       required this.monthLabels,
       required this.dayTextColor,
       required this.columnsToCreate,
-      required this.date})
+      required this.startDate,
+      required this.finishDate,
+      required this.date,
+      required this.firstDayWeek})
       : super(key: key);
 
   /// The main logic for generating a list of columns representing a week
   /// Each column is a week having a [MonthLabel] and 7 [HeatMapDay] widgets
   List<Widget> buildWeekItems() {
-    List<DateTime> dateList = getCalendarDates(columnsToCreate);
+    List<DateTime> dateList = _getCalendarDates();
     int totalDays = dateList.length;
     var daysPerWeek = DateTime.daysPerWeek;
     int totalWeeks = (totalDays / daysPerWeek).ceil();
@@ -98,18 +96,21 @@ class WeekColumns extends StatelessWidget {
   }
 
   /// Creates a list of all weeks based on given [columnsAmount]
-  List<DateTime> getCalendarDates(int columnsAmount) {
-    DateTime firstDayOfTheWeek = TimeUtils.firstDayOfTheWeek(date);
-    DateTime firstDayOfCalendar =
-        TimeUtils.firstDayOfCalendar(firstDayOfTheWeek, columnsAmount);
-    return TimeUtils.datesBetween(firstDayOfCalendar, date);
+  List<DateTime> _getCalendarDates() {
+    var firstDayOfTheWeek =
+        TimeUtils.firstDayOfTheWeek(DateUtils.dateOnly(startDate))
+            .add(Duration(days: firstDayWeek));
+    var dateList = TimeUtils.datesBetween(
+        firstDayOfTheWeek, DateUtils.dateOnly(finishDate));
+
+    return dateList;
   }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
         children: buildWeekItems(),
       ),
     );

@@ -46,11 +46,6 @@ class TimeUtils {
         day, Duration(days: (DateTime.daysPerWeek * (columnsAmount - 1))));
   }
 
-  /// Sets a DateTime hours/minutes/seconds/microseconds/milliseconds to 0
-  static DateTime removeTime(DateTime dateTime) {
-    return DateTime(dateTime.year, dateTime.month, dateTime.day);
-  }
-
   /// Returns date without timezone info (UTC format)
   static DateTime removeTZ(DateTime dateTime) {
     return DateTime.utc(
