@@ -38,36 +38,32 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: HeatMapCalendar(
+          startDate: DateTime.now().subtract(const Duration(days: 32)),
+          finishDate: DateTime.now().add(const Duration(days: 80)),
           input: {
-            TimeUtils.removeTime(
+            DateUtils.dateOnly(
                 DateTime.now().subtract(const Duration(days: 3))): 5,
-            TimeUtils.removeTime(
+            DateUtils.dateOnly(
                 DateTime.now().subtract(const Duration(days: 2))): 35,
-            TimeUtils.removeTime(
+            DateUtils.dateOnly(
                 DateTime.now().subtract(const Duration(days: 1))): 14,
-            TimeUtils.removeTime(DateTime.now()): 5,
+            DateUtils.dateOnly(DateTime.now()): 5,
           },
           colorThresholds: {
             1: Colors.green.shade100,
             10: Colors.green.shade300,
             30: Colors.green.shade500
           },
-          weekDaysLabels: const ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-          monthsLabels: const [
-            "",
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
+          weekDaysLabels: const [
+            'M',
+            'T',
+            'W',
+            'T',
+            'F',
+            'S',
+            'S',
           ],
+          monthsLabels: TimeUtils.defaultMonthsLabels,
           squareSize: 20.0,
           textOpacity: 0.3,
           labelTextColor: Colors.blueGrey,
