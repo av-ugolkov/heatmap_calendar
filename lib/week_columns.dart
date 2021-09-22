@@ -15,7 +15,7 @@ class WeekColumns extends StatelessWidget {
   final DateTime startDate;
   final DateTime finishDate;
   final DateTime date;
-  final int firstDayWeek;
+  final bool mondayFirstDayWeek;
 
   const WeekColumns(
       {Key? key,
@@ -30,7 +30,7 @@ class WeekColumns extends StatelessWidget {
       required this.startDate,
       required this.finishDate,
       required this.date,
-      required this.firstDayWeek})
+      required this.mondayFirstDayWeek})
       : super(key: key);
 
   /// The main logic for generating a list of columns representing a week
@@ -99,7 +99,7 @@ class WeekColumns extends StatelessWidget {
   List<DateTime> _getCalendarDates() {
     var firstDayOfTheWeek =
         TimeUtils.firstDayOfTheWeek(DateUtils.dateOnly(startDate))
-            .add(Duration(days: firstDayWeek));
+            .add(Duration(days: mondayFirstDayWeek ? 1 : 0));
     var dateList = TimeUtils.datesBetween(
         firstDayOfTheWeek, DateUtils.dateOnly(finishDate));
 

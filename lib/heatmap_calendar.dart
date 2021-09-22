@@ -45,7 +45,7 @@ class HeatMapCalendar extends StatefulWidget {
   /// Helps avoiding overspacing issues
   final double safetyMargin;
 
-  final int firstDayWeek;
+  final bool mondayfirstDayWeek;
 
   const HeatMapCalendar(
       {Key? key,
@@ -60,7 +60,7 @@ class HeatMapCalendar extends StatefulWidget {
       this.labelTextColor = Colors.black,
       this.dayTextColor = Colors.black,
       this.safetyMargin = 5,
-      this.firstDayWeek = DateTime.monday})
+      this.mondayfirstDayWeek = true})
       : super(key: key);
 
   @override
@@ -119,7 +119,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                   date: DateTime.now(),
                   startDate: widget.startDate,
                   finishDate: widget.finishDate,
-                  firstDayWeek: widget.firstDayWeek,
+                  mondayFirstDayWeek: widget.mondayfirstDayWeek,
                 )
               ],
             ),
