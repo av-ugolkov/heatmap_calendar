@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_calendar.dart';
 import 'package:heatmap_calendar/time_utils.dart';
@@ -66,8 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
           monthsLabels: TimeUtils.defaultMonthsLabels,
           squareSize: 20.0,
           textOpacity: 0.3,
+          showDateLabel: false,
           labelTextColor: Colors.blueGrey,
           dayTextColor: Colors.blue.shade500,
+          onTapHeatMapDay: (tapDate) {
+            log(tapDate.toString());
+          },
         ),
       ),
     );
