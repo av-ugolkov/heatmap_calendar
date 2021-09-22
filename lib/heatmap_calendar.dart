@@ -96,8 +96,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
         return InkWell(
           onDoubleTap: onDoubleTap,
           child: SizedBox(
-            height: (widget.squareSize + HeatMapCalendar.edgeSize) *
-                (HeatMapCalendar.rowCount + 1),
+            height: (widget.squareSize + HeatMapCalendar.edgeSize) * (HeatMapCalendar.rowCount + 1),
             width: constraints.maxWidth,
             child: Row(
               children: <Widget>[
@@ -105,6 +104,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                   weekDaysLabels: widget.weekDaysLabels,
                   squareSize: widget.squareSize,
                   labelTextColor: widget.labelTextColor,
+                  mondayfirstDayWeek: widget.mondayfirstDayWeek,
                 ),
                 WeekColumns(
                   squareSize: widget.squareSize,
@@ -114,8 +114,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                   currentOpacity: currentOpacity,
                   monthLabels: widget.monthsLabels,
                   dayTextColor: widget.dayTextColor,
-                  columnsToCreate:
-                      _getColumnsToCreate(constraints.maxWidth) - 1,
+                  columnsToCreate: _getColumnsToCreate(constraints.maxWidth) - 1,
                   date: DateTime.now(),
                   startDate: widget.startDate,
                   finishDate: widget.finishDate,
