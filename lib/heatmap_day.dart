@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
+typedef TapHeatMapDayCallback = void Function(DateTime);
+
 class HeatMapDay extends StatelessWidget {
   final int value;
   final double size;
   final Map<int, Color> thresholds;
   final Color defaultColor;
-  final int currentDay;
+  final DateTime currentDay;
   final double opacity;
   final Duration animationDuration;
   final Color textColor;
   final FontWeight? fontWeight;
+  final TapHeatMapDayCallback? onTapCallback;
 
   const HeatMapDay(
       {Key? key,
@@ -21,7 +24,8 @@ class HeatMapDay extends StatelessWidget {
       this.opacity = 0.3,
       this.animationDuration = const Duration(milliseconds: 300),
       this.textColor = Colors.black,
-      this.fontWeight})
+      this.fontWeight,
+      this.onTapCallback})
       : super(key: key);
 
   /// Loop for getting the right color based on [thresholds] values
@@ -41,18 +45,21 @@ class HeatMapDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: size,
-      width: size,
-      color: getColorFromThreshold(),
-      margin: const EdgeInsets.all(2.0),
-      child: AnimatedOpacity(
-        opacity: opacity,
-        duration: animationDuration,
-        child: Text(
-          currentDay.toString(),
-          style: TextStyle(fontWeight: fontWeight, color: textColor),
+    return GestureDetector(
+      onTap: () => onTapCallback?.call(currentDay),
+      child: Container(
+        alignment: Alignment.center,
+        height: size,
+        width: size,
+        color: getColorFromThreshold(),
+        margin: const EdgeInsets.all(2.0),
+        child: AnimatedOpacity(
+          opacity: opacity,
+          duration: animationDuration,
+          child: Text(
+            currentDay.day.toString(),
+            style: TextStyle(fontWeight: fontWeight, color: textColor),
+          ),
         ),
       ),
     );

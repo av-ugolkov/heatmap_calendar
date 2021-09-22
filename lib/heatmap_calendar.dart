@@ -33,6 +33,8 @@ class HeatMapCalendar extends StatefulWidget {
   /// The size of each item of the calendar
   final double squareSize;
 
+  final bool showDateLabel;
+
   /// The opacity of the text when the user double taps the widget
   final double textOpacity;
 
@@ -46,6 +48,7 @@ class HeatMapCalendar extends StatefulWidget {
   final double safetyMargin;
 
   final bool mondayfirstDayWeek;
+  final TapHeatMapDayCallback? onTapHeatMapDay;
 
   const HeatMapCalendar(
       {Key? key,
@@ -56,11 +59,13 @@ class HeatMapCalendar extends StatefulWidget {
       this.weekDaysLabels = TimeUtils.defaultWeekLabels,
       this.monthsLabels = TimeUtils.defaultMonthsLabels,
       this.squareSize = 16,
+      this.showDateLabel = false,
       this.textOpacity = 0.2,
       this.labelTextColor = Colors.black,
       this.dayTextColor = Colors.black,
       this.safetyMargin = 5,
-      this.mondayfirstDayWeek = true})
+      this.mondayfirstDayWeek = true,
+      this.onTapHeatMapDay})
       : super(key: key);
 
   @override
@@ -68,16 +73,7 @@ class HeatMapCalendar extends StatefulWidget {
 }
 
 class HeatMapCalendarState extends State<HeatMapCalendar> {
-  double currentOpacity = 0;
   bool displayDates = false;
-
-  /// Toggles the labels in all [HeatMapDay]s
-  void onDoubleTap() {
-    setState(() {
-      displayDates = !displayDates;
-      currentOpacity = displayDates ? widget.textOpacity : 0;
-    });
-  }
 
   /// Calculates the right amount of columns to create based on [maxWidth]
   ///
@@ -93,35 +89,34 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return InkWell(
-          onDoubleTap: onDoubleTap,
-          child: SizedBox(
-            height: (widget.squareSize + HeatMapCalendar.edgeSize) * (HeatMapCalendar.rowCount + 1),
-            width: constraints.maxWidth,
-            child: Row(
-              children: <Widget>[
-                WeekLabels(
-                  weekDaysLabels: widget.weekDaysLabels,
-                  squareSize: widget.squareSize,
-                  labelTextColor: widget.labelTextColor,
-                  mondayfirstDayWeek: widget.mondayfirstDayWeek,
-                ),
-                WeekColumns(
-                  squareSize: widget.squareSize,
-                  labelTextColor: widget.labelTextColor,
-                  input: widget.input,
-                  colorThresholds: widget.colorThresholds,
-                  currentOpacity: currentOpacity,
-                  monthLabels: widget.monthsLabels,
-                  dayTextColor: widget.dayTextColor,
-                  columnsToCreate: _getColumnsToCreate(constraints.maxWidth) - 1,
-                  date: DateTime.now(),
-                  startDate: widget.startDate,
-                  finishDate: widget.finishDate,
-                  mondayFirstDayWeek: widget.mondayfirstDayWeek,
-                )
-              ],
-            ),
+        return SizedBox(
+          height: (widget.squareSize + HeatMapCalendar.edgeSize) *
+              (HeatMapCalendar.rowCount + 1),
+          width: constraints.maxWidth,
+          child: Row(
+            children: <Widget>[
+              WeekLabels(
+                weekDaysLabels: widget.weekDaysLabels,
+                squareSize: widget.squareSize,
+                labelTextColor: widget.labelTextColor,
+                mondayfirstDayWeek: widget.mondayfirstDayWeek,
+              ),
+              WeekColumns(
+                squareSize: widget.squareSize,
+                labelTextColor: widget.labelTextColor,
+                input: widget.input,
+                colorThresholds: widget.colorThresholds,
+                currentOpacity: widget.showDateLabel ? widget.textOpacity : 0,
+                monthLabels: widget.monthsLabels,
+                dayTextColor: widget.dayTextColor,
+                columnsToCreate: _getColumnsToCreate(constraints.maxWidth) - 1,
+                date: DateTime.now(),
+                startDate: widget.startDate,
+                finishDate: widget.finishDate,
+                mondayFirstDayWeek: widget.mondayfirstDayWeek,
+                onTapHeatMapDay: widget.onTapHeatMapDay,
+              )
+            ],
           ),
         );
       },

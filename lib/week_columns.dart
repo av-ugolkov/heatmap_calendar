@@ -16,6 +16,7 @@ class WeekColumns extends StatelessWidget {
   final DateTime finishDate;
   final DateTime date;
   final bool mondayFirstDayWeek;
+  final TapHeatMapDayCallback? onTapHeatMapDay;
 
   const WeekColumns(
       {Key? key,
@@ -30,7 +31,8 @@ class WeekColumns extends StatelessWidget {
       required this.startDate,
       required this.finishDate,
       required this.date,
-      required this.mondayFirstDayWeek})
+      required this.mondayFirstDayWeek,
+      this.onTapHeatMapDay})
       : super(key: key);
 
   /// The main logic for generating a list of columns representing a week
@@ -75,9 +77,10 @@ class WeekColumns extends StatelessWidget {
           value: value ?? 0,
           thresholds: colorThresholds,
           size: squareSize,
-          currentDay: currentDate.day,
+          currentDay: currentDate,
           opacity: currentOpacity,
           textColor: dayTextColor,
+          onTapCallback: onTapHeatMapDay,
         );
         columnItems.add(heatMapDay);
 
