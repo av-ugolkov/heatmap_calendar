@@ -19,6 +19,12 @@ class WeekLabels extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final offsetDay = mondayfirstDayWeek ? 0 : 6;
+
+    int getIndexWeekDay(int index) {
+      return (index + offsetDay) % DateTime.daysPerWeek;
+    }
+
     return Column(
       children: <Widget>[
         DefaultContainer(
@@ -28,46 +34,41 @@ class WeekLabels extends StatelessWidget {
           margin: 0,
         ),
         DefaultContainer(
-          text: weekDaysLabels[_getIndexWeekDay(0)],
+          text: weekDaysLabels[getIndexWeekDay(0)],
           size: squareSize,
           textColor: labelTextColor,
         ),
         DefaultContainer(
-          text: weekDaysLabels[_getIndexWeekDay(1)],
+          text: weekDaysLabels[getIndexWeekDay(1)],
           size: squareSize,
           textColor: labelTextColor,
         ),
         DefaultContainer(
-          text: weekDaysLabels[_getIndexWeekDay(2)],
+          text: weekDaysLabels[getIndexWeekDay(2)],
           size: squareSize,
           textColor: labelTextColor,
         ),
         DefaultContainer(
-          text: weekDaysLabels[_getIndexWeekDay(3)],
+          text: weekDaysLabels[getIndexWeekDay(3)],
           size: squareSize,
           textColor: labelTextColor,
         ),
         DefaultContainer(
-          text: weekDaysLabels[_getIndexWeekDay(4)],
+          text: weekDaysLabels[getIndexWeekDay(4)],
           size: squareSize,
           textColor: labelTextColor,
         ),
         DefaultContainer(
-          text: weekDaysLabels[_getIndexWeekDay(5)],
+          text: weekDaysLabels[getIndexWeekDay(5)],
           size: squareSize,
           textColor: labelTextColor,
         ),
         DefaultContainer(
-          text: weekDaysLabels[_getIndexWeekDay(6)],
+          text: weekDaysLabels[getIndexWeekDay(6)],
           size: squareSize,
           textColor: labelTextColor,
         ),
       ],
     );
-  }
-
-  int _getIndexWeekDay(int index) {
-    final offsetDay = mondayfirstDayWeek ? 0 : 6;
-    return (index + offsetDay) % DateTime.daysPerWeek;
   }
 }
