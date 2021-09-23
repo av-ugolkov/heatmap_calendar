@@ -19,6 +19,7 @@ class MonthLabel extends StatelessWidget {
       height: size,
       width: size,
       child: Stack(
+        clipBehavior: Clip.none,
         fit: StackFit.expand,
         children: <Widget>[
           Positioned(
@@ -26,6 +27,7 @@ class MonthLabel extends StatelessWidget {
             bottom: 0,
             child: Text(
               text,
+              softWrap: true,
               style: TextStyle(fontSize: 16, color: textColor),
             ),
           )
