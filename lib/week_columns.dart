@@ -73,18 +73,22 @@ class WeekColumns extends StatelessWidget {
 
         final int? value = input[currentDate];
 
+        var defaultColor = Colors.black12;
+        var nonExistDay = currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
+        if (nonExistDay) {
+          defaultColor = Colors.black;
+        }
         HeatMapDay heatMapDay = HeatMapDay(
           value: value ?? 0,
           thresholds: colorThresholds,
           size: squareSize,
+          defaultColor: defaultColor,
           currentDay: currentDate,
           opacity: currentOpacity,
           textColor: dayTextColor,
-          onTapCallback: onTapHeatMapDay,
+          onTapCallback: nonExistDay ? null : onTapHeatMapDay,
         );
         columnItems.add(heatMapDay);
-
-        // If the columnsItems has a length of 8, it means it should be ended.
         if (columnItems.length == 8) {
           columns.add(Column(children: columnItems));
           columnItems = [];
@@ -100,22 +104,25 @@ class WeekColumns extends StatelessWidget {
 
   /// Creates a list of all weeks based on given [columnsAmount]
   List<DateTime> _getCalendarDates() {
-    var firstDayOfTheWeek =
-        TimeUtils.firstDayOfTheWeek(DateUtils.dateOnly(startDate))
-            .add(Duration(days: mondayFirstDayWeek ? 1 : 0));
-    var dateList = TimeUtils.datesBetween(
-        firstDayOfTheWeek, DateUtils.dateOnly(finishDate));
+    var firstDay = TimeUtils.firstDayOfTheWeek(DateUtils.dateOnly(startDate))
+        .add(Duration(days: mondayFirstDayWeek ? 1 : 0));
+    var lastDay = DateUtils.dateOnly(finishDate)
+        .add(Duration(days: DateTime.daysPerWeek - finishDate.weekday));
+    var dateList = TimeUtils.datesBetween(firstDay, lastDay);
 
     return dateList;
   }
 
   @override
   Widget build(BuildContext context) {
+    final items = buildWeekItems();
     return Expanded(
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: buildWeekItems(),
-      ),
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return items[index];
+          }),
     );
   }
 }
