@@ -28,10 +28,6 @@ class HeatMapDay extends StatelessWidget {
       this.onTapCallback})
       : super(key: key);
 
-  /// Loop for getting the right color based on [thresholds] values
-  ///
-  /// If the [value] is greater than or equal one of [thresholds]' key,
-  /// it will receive its value
   Color getColorFromThreshold() {
     Color color = defaultColor;
     thresholds.forEach((mapKey, mapColor) {

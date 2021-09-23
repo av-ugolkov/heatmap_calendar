@@ -67,10 +67,10 @@ class WeekColumns extends StatelessWidget {
         DateTime currentDate = dateList.first;
         dateList.removeAt(0);
 
-        var defaultColor = Colors.black12;
+        var defaultColor = Colors.grey.shade500;
         var nonExistDay = currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
         if (nonExistDay) {
-          defaultColor = Colors.black;
+          defaultColor = Colors.black12;
         }
         HeatMapDay heatMapDay = HeatMapDay(
           value: input[currentDate] ?? 0,
