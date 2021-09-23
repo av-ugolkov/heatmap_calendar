@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_day.dart';
 import 'package:heatmap_calendar/month_label.dart';
@@ -11,7 +13,7 @@ class WeekColumns extends StatelessWidget {
   final double currentOpacity;
   final List<String> monthLabels;
   final Color dayTextColor;
-  final int columnsToCreate;
+  final int minColumnsToCreate;
   final DateTime startDate;
   final DateTime finishDate;
   final DateTime date;
@@ -27,7 +29,7 @@ class WeekColumns extends StatelessWidget {
       required this.currentOpacity,
       required this.monthLabels,
       required this.dayTextColor,
-      required this.columnsToCreate,
+      required this.minColumnsToCreate,
       required this.startDate,
       required this.finishDate,
       required this.date,
@@ -66,8 +68,7 @@ class WeekColumns extends StatelessWidget {
         dateList.removeAt(0);
 
         var defaultColor = Colors.black12;
-        var nonExistDay =
-            currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
+        var nonExistDay = currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
         if (nonExistDay) {
           defaultColor = Colors.black;
         }
@@ -103,11 +104,22 @@ class WeekColumns extends StatelessWidget {
     if (mondayFirstDayWeek) {
       offsetDay = DateTime.daysPerWeek - finishDate.weekday;
     } else {
-      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) %
-          DateTime.daysPerWeek;
+      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) % DateTime.daysPerWeek;
     }
 
     var lastDay = DateUtils.dateOnly(finishDate).add(Duration(days: offsetDay));
+    var period = lastDay.difference(firstDay);
+    var createColumn = period.inDays ~/ 7;
+    if (createColumn < minColumnsToCreate) {
+      var countFirstColumns = (minColumnsToCreate - createColumn) ~/ 2;
+      log(minColumnsToCreate.toString());
+      log(createColumn.toString());
+      log(countFirstColumns.toString());
+      var addFirstDays = countFirstColumns * DateTime.daysPerWeek;
+      firstDay = firstDay.subtract(Duration(days: addFirstDays));
+      lastDay =
+          lastDay.add(Duration(days: (minColumnsToCreate - createColumn - countFirstColumns) * 7));
+    }
     var dateList = TimeUtils.datesBetween(firstDay, lastDay);
 
     return dateList;
@@ -118,11 +130,12 @@ class WeekColumns extends StatelessWidget {
     final items = buildWeekItems();
     return Expanded(
       child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return items[index];
-          }),
+        scrollDirection: Axis.horizontal,
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return items[index];
+        },
+      ),
     );
   }
 }
