@@ -106,8 +106,15 @@ class WeekColumns extends StatelessWidget {
   List<DateTime> _getCalendarDates() {
     var firstDay = TimeUtils.firstDayOfTheWeek(DateUtils.dateOnly(startDate))
         .add(Duration(days: mondayFirstDayWeek ? 1 : 0));
-    var lastDay = DateUtils.dateOnly(finishDate)
-        .add(Duration(days: DateTime.daysPerWeek - finishDate.weekday));
+
+    var offsetDay = 0;
+    if (mondayFirstDayWeek) {
+      offsetDay = DateTime.daysPerWeek - finishDate.weekday;
+    } else {
+      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) % DateTime.daysPerWeek;
+    }
+
+    var lastDay = DateUtils.dateOnly(finishDate).add(Duration(days: offsetDay));
     var dateList = TimeUtils.datesBetween(firstDay, lastDay);
 
     return dateList;
