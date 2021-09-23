@@ -14,18 +14,10 @@ class TimeUtils {
     "Sep",
     "Oct",
     "Nov",
-    "Dec",
+    "Dec"
   ];
 
-  static const List<String> defaultWeekLabels = [
-    'S',
-    'M',
-    'T',
-    'W',
-    'T',
-    'F',
-    'S'
-  ];
+  static const List<String> defaultWeekLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   /// Obtains the first day of the current week,
   /// based on user's current day
@@ -42,34 +34,19 @@ class TimeUtils {
   }
 
   static DateTime firstDayOfCalendar(DateTime day, int columnsAmount) {
-    return safeSubtract(
-        day, Duration(days: (DateTime.daysPerWeek * (columnsAmount - 1))));
+    return safeSubtract(day, Duration(days: (DateTime.daysPerWeek * (columnsAmount - 1))));
   }
 
   /// Returns date without timezone info (UTC format)
   static DateTime removeTZ(DateTime dateTime) {
-    return DateTime.utc(
-        dateTime.year,
-        dateTime.month,
-        dateTime.day,
-        dateTime.hour,
-        dateTime.minute,
-        dateTime.second,
-        dateTime.millisecond,
-        dateTime.millisecond);
+    return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute,
+        dateTime.second, dateTime.millisecond, dateTime.millisecond);
   }
 
   /// Returns date with local timezone
   static DateTime addTZ(DateTime dateTime) {
-    return DateTime(
-        dateTime.year,
-        dateTime.month,
-        dateTime.day,
-        dateTime.hour,
-        dateTime.minute,
-        dateTime.second,
-        dateTime.millisecond,
-        dateTime.microsecond);
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute,
+        dateTime.second, dateTime.millisecond, dateTime.microsecond);
   }
 
   /// Subtract duration without timezone.
