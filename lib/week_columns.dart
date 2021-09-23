@@ -35,8 +35,6 @@ class WeekColumns extends StatelessWidget {
       this.onTapHeatMapDay})
       : super(key: key);
 
-  /// The main logic for generating a list of columns representing a week
-  /// Each column is a week having a [MonthLabel] and 7 [HeatMapDay] widgets
   List<Widget> buildWeekItems() {
     List<DateTime> dateList = _getCalendarDates();
     int totalDays = dateList.length;
@@ -44,16 +42,12 @@ class WeekColumns extends StatelessWidget {
     int totalWeeks = (totalDays / daysPerWeek).ceil();
     int amount = totalDays + totalWeeks;
 
-    // The list of columns that will be returned
     List<Widget> columns = [];
 
-    // The list of items that will be used to form a week
     List<Widget> columnItems = [];
     List<int> months = [];
 
     for (int i = 0; i < amount; i++) {
-      // If true, it means that it should be a label,
-      // if false, it should be a HeatMapDay
       if (i % 8 == 0) {
         String month = "";
 
@@ -71,15 +65,14 @@ class WeekColumns extends StatelessWidget {
         DateTime currentDate = dateList.first;
         dateList.removeAt(0);
 
-        final int? value = input[currentDate];
-
         var defaultColor = Colors.black12;
-        var nonExistDay = currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
+        var nonExistDay =
+            currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
         if (nonExistDay) {
           defaultColor = Colors.black;
         }
         HeatMapDay heatMapDay = HeatMapDay(
-          value: value ?? 0,
+          value: input[currentDate] ?? 0,
           thresholds: colorThresholds,
           size: squareSize,
           defaultColor: defaultColor,
@@ -102,7 +95,6 @@ class WeekColumns extends StatelessWidget {
     return columns;
   }
 
-  /// Creates a list of all weeks based on given [columnsAmount]
   List<DateTime> _getCalendarDates() {
     var firstDay = TimeUtils.firstDayOfTheWeek(DateUtils.dateOnly(startDate))
         .add(Duration(days: mondayFirstDayWeek ? 1 : 0));
@@ -111,7 +103,8 @@ class WeekColumns extends StatelessWidget {
     if (mondayFirstDayWeek) {
       offsetDay = DateTime.daysPerWeek - finishDate.weekday;
     } else {
-      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) % DateTime.daysPerWeek;
+      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) %
+          DateTime.daysPerWeek;
     }
 
     var lastDay = DateUtils.dateOnly(finishDate).add(Duration(days: offsetDay));
