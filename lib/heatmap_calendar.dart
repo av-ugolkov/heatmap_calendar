@@ -24,9 +24,9 @@ class HeatMapCalendar extends StatefulWidget {
   final double squareSize;
   final bool showDateLabel;
 
+  final TextStyle? textStyleDateText;
   final double textOpacity;
   final Color labelTextColor;
-  final Color dayTextColor;
   final double safetyMargin;
 
   final bool mondayfirstDayWeek;
@@ -46,10 +46,10 @@ class HeatMapCalendar extends StatefulWidget {
     this.showDateLabel = false,
     this.textOpacity = 0.2,
     this.labelTextColor = Colors.black,
-    this.dayTextColor = Colors.black,
     this.safetyMargin = 5,
     this.mondayfirstDayWeek = true,
     this.onTapHeatMapDay,
+    this.textStyleDateText,
   }) : super(key: key);
 
   @override
@@ -88,7 +88,6 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                 colorThresholds: widget.colorThresholds,
                 currentOpacity: widget.showDateLabel ? widget.textOpacity : 0,
                 monthLabels: widget.monthsLabels,
-                dayTextColor: widget.dayTextColor,
                 minColumnsToCreate:
                     _getMinColumnsToCreate(constraints.maxWidth) - 1,
                 date: DateTime.now(),
@@ -98,6 +97,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                 onTapHeatMapDay: widget.onTapHeatMapDay,
                 activeDayColor: widget.activeSquareColor,
                 disabledDayColor: widget.disabledSquareColor,
+                textStyleDate: widget.textStyleDateText,
               ),
             ],
           ),

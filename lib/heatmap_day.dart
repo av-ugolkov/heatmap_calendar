@@ -11,8 +11,7 @@ class HeatMapDay extends StatelessWidget {
   final DateTime currentDay;
   final double opacity;
   final Duration animationDuration;
-  final Color textColor;
-  final FontWeight? fontWeight;
+  final TextStyle? textStyle;
   final TapHeatMapDayCallback? onTapCallback;
 
   const HeatMapDay(
@@ -25,8 +24,7 @@ class HeatMapDay extends StatelessWidget {
       required this.currentDay,
       this.opacity = 0.3,
       this.animationDuration = const Duration(milliseconds: 300),
-      this.textColor = Colors.black,
-      this.fontWeight,
+      this.textStyle,
       this.onTapCallback})
       : super(key: key);
 
@@ -56,7 +54,7 @@ class HeatMapDay extends StatelessWidget {
           duration: animationDuration,
           child: Text(
             currentDay.day.toString(),
-            style: TextStyle(fontWeight: fontWeight, color: textColor),
+            style: textStyle,
           ),
         ),
       ),

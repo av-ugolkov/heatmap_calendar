@@ -12,32 +12,32 @@ class WeekColumns extends StatelessWidget {
   final List<String> monthLabels;
   final Color activeDayColor;
   final Color disabledDayColor;
-  final Color dayTextColor;
   final int minColumnsToCreate;
   final DateTime startDate;
   final DateTime finishDate;
   final DateTime date;
   final bool mondayFirstDayWeek;
   final TapHeatMapDayCallback? onTapHeatMapDay;
+  final TextStyle? textStyleDate;
 
-  const WeekColumns(
-      {Key? key,
-      required this.squareSize,
-      required this.labelTextColor,
-      required this.input,
-      required this.colorThresholds,
-      required this.currentOpacity,
-      required this.monthLabels,
-      required this.dayTextColor,
-      required this.minColumnsToCreate,
-      required this.startDate,
-      required this.finishDate,
-      required this.date,
-      required this.mondayFirstDayWeek,
-      required this.activeDayColor,
-      required this.disabledDayColor,
-      this.onTapHeatMapDay})
-      : super(key: key);
+  const WeekColumns({
+    Key? key,
+    required this.squareSize,
+    required this.labelTextColor,
+    required this.input,
+    required this.colorThresholds,
+    required this.currentOpacity,
+    required this.monthLabels,
+    required this.minColumnsToCreate,
+    required this.startDate,
+    required this.finishDate,
+    required this.date,
+    required this.mondayFirstDayWeek,
+    required this.activeDayColor,
+    required this.disabledDayColor,
+    this.onTapHeatMapDay,
+    this.textStyleDate,
+  }) : super(key: key);
 
   List<Widget> buildWeekItems() {
     List<DateTime> dateList = _getCalendarDates();
@@ -79,7 +79,7 @@ class WeekColumns extends StatelessWidget {
           disabledColor: disabledDayColor,
           currentDay: currentDate,
           opacity: currentOpacity,
-          textColor: dayTextColor,
+          textStyle: textStyleDate,
           onTapCallback: nonExistDay ? null : onTapHeatMapDay,
         );
         columnItems.add(heatMapDay);
