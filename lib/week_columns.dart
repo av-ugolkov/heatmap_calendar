@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_day.dart';
 import 'package:heatmap_calendar/month_label.dart';
@@ -12,6 +10,8 @@ class WeekColumns extends StatelessWidget {
   final Map<int, Color> colorThresholds;
   final double currentOpacity;
   final List<String> monthLabels;
+  final Color activeDayColor;
+  final Color disabledDayColor;
   final Color dayTextColor;
   final int minColumnsToCreate;
   final DateTime startDate;
@@ -34,6 +34,8 @@ class WeekColumns extends StatelessWidget {
       required this.finishDate,
       required this.date,
       required this.mondayFirstDayWeek,
+      required this.activeDayColor,
+      required this.disabledDayColor,
       this.onTapHeatMapDay})
       : super(key: key);
 
@@ -67,16 +69,14 @@ class WeekColumns extends StatelessWidget {
         DateTime currentDate = dateList.first;
         dateList.removeAt(0);
 
-        var defaultColor = Colors.grey.shade500;
-        var nonExistDay = currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
-        if (nonExistDay) {
-          defaultColor = Colors.black12;
-        }
+        var nonExistDay =
+            currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
         HeatMapDay heatMapDay = HeatMapDay(
           value: input[currentDate] ?? 0,
           thresholds: colorThresholds,
           size: squareSize,
-          defaultColor: defaultColor,
+          activeColor: activeDayColor,
+          disabledColor: disabledDayColor,
           currentDay: currentDate,
           opacity: currentOpacity,
           textColor: dayTextColor,
@@ -104,21 +104,20 @@ class WeekColumns extends StatelessWidget {
     if (mondayFirstDayWeek) {
       offsetDay = DateTime.daysPerWeek - finishDate.weekday;
     } else {
-      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) % DateTime.daysPerWeek;
+      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) %
+          DateTime.daysPerWeek;
     }
 
     var lastDay = DateUtils.dateOnly(finishDate).add(Duration(days: offsetDay));
     var period = lastDay.difference(firstDay);
-    var createColumn = period.inDays ~/ 7;
+    var createColumn = period.inDays ~/ DateTime.daysPerWeek;
     if (createColumn < minColumnsToCreate) {
       var countFirstColumns = (minColumnsToCreate - createColumn) ~/ 2;
-      log(minColumnsToCreate.toString());
-      log(createColumn.toString());
-      log(countFirstColumns.toString());
       var addFirstDays = countFirstColumns * DateTime.daysPerWeek;
       firstDay = firstDay.subtract(Duration(days: addFirstDays));
-      lastDay =
-          lastDay.add(Duration(days: (minColumnsToCreate - createColumn - countFirstColumns) * 7));
+      lastDay = lastDay.add(Duration(
+          days: (minColumnsToCreate - createColumn - countFirstColumns) *
+              DateTime.daysPerWeek));
     }
     var dateList = TimeUtils.datesBetween(firstDay, lastDay);
 
@@ -127,15 +126,25 @@ class WeekColumns extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = buildWeekItems();
     return Expanded(
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return items[index];
-        },
-      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        final items = buildWeekItems();
+        var columnCurrentDay =
+            DateUtils.dateOnly(DateTime.now()).difference(startDate).inDays ~/
+                DateTime.daysPerWeek;
+        var offset =
+            (columnCurrentDay + 1) * (squareSize + 4) - constraints.maxWidth;
+
+        var scrollController = ScrollController(initialScrollOffset: offset);
+        return ListView.builder(
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return items[index];
+          },
+        );
+      }),
     );
   }
 }

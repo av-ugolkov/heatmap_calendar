@@ -6,7 +6,8 @@ class HeatMapDay extends StatelessWidget {
   final int value;
   final double size;
   final Map<int, Color> thresholds;
-  final Color defaultColor;
+  final Color activeColor;
+  final Color disabledColor;
   final DateTime currentDay;
   final double opacity;
   final Duration animationDuration;
@@ -19,7 +20,8 @@ class HeatMapDay extends StatelessWidget {
       required this.value,
       required this.size,
       required this.thresholds,
-      this.defaultColor = Colors.black12,
+      this.activeColor = Colors.grey,
+      this.disabledColor = Colors.black12,
       required this.currentDay,
       this.opacity = 0.3,
       this.animationDuration = const Duration(milliseconds: 300),
@@ -29,7 +31,7 @@ class HeatMapDay extends StatelessWidget {
       : super(key: key);
 
   Color getColorFromThreshold() {
-    Color color = defaultColor;
+    Color color = activeColor;
     thresholds.forEach((mapKey, mapColor) {
       if (value >= mapKey) {
         color = mapColor;
@@ -47,7 +49,7 @@ class HeatMapDay extends StatelessWidget {
         alignment: Alignment.center,
         height: size,
         width: size,
-        color: getColorFromThreshold(),
+        color: onTapCallback == null ? disabledColor : getColorFromThreshold(),
         margin: const EdgeInsets.all(2.0),
         child: AnimatedOpacity(
           opacity: opacity,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_day.dart';
 import 'package:heatmap_calendar/time_utils.dart';
@@ -5,7 +7,6 @@ import 'package:heatmap_calendar/week_columns.dart';
 import 'package:heatmap_calendar/week_labels.dart';
 
 class HeatMapCalendar extends StatefulWidget {
-  static const double columnCount = 11;
   static const double rowCount = 8;
   static const double edgeSize = 4;
 
@@ -20,6 +21,8 @@ class HeatMapCalendar extends StatefulWidget {
 
   final Map<int, Color> colorThresholds;
 
+  final Color activeSquareColor;
+  final Color disabledSquareColor;
   final double squareSize;
   final bool showDateLabel;
 
@@ -31,23 +34,28 @@ class HeatMapCalendar extends StatefulWidget {
   final bool mondayfirstDayWeek;
   final TapHeatMapDayCallback? onTapHeatMapDay;
 
-  const HeatMapCalendar(
-      {Key? key,
-      required this.startDate,
-      required this.finishDate,
-      required this.input,
-      required this.colorThresholds,
-      this.weekDaysLabels = TimeUtils.defaultWeekLabels,
-      this.monthsLabels = TimeUtils.defaultMonthsLabels,
-      this.squareSize = 16,
-      this.showDateLabel = false,
-      this.textOpacity = 0.2,
-      this.labelTextColor = Colors.black,
-      this.dayTextColor = Colors.black,
-      this.safetyMargin = 5,
-      this.mondayfirstDayWeek = true,
-      this.onTapHeatMapDay})
-      : super(key: key);
+  final bool showSelectDate;
+
+  const HeatMapCalendar({
+    Key? key,
+    required this.startDate,
+    required this.finishDate,
+    required this.input,
+    required this.colorThresholds,
+    this.weekDaysLabels = TimeUtils.defaultWeekLabels,
+    this.monthsLabels = TimeUtils.defaultMonthsLabels,
+    this.activeSquareColor = Colors.grey,
+    this.disabledSquareColor = Colors.black12,
+    this.squareSize = 16,
+    this.showDateLabel = false,
+    this.textOpacity = 0.2,
+    this.labelTextColor = Colors.black,
+    this.dayTextColor = Colors.black,
+    this.safetyMargin = 5,
+    this.mondayfirstDayWeek = true,
+    this.onTapHeatMapDay,
+    this.showSelectDate = false,
+  }) : super(key: key);
 
   @override
   HeatMapCalendarState createState() => HeatMapCalendarState();
@@ -67,8 +75,10 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        log(constraints.maxHeight.toString());
         return SizedBox(
-          height: (widget.squareSize + HeatMapCalendar.edgeSize) * (HeatMapCalendar.rowCount + 1),
+          height: (widget.squareSize + HeatMapCalendar.edgeSize) *
+              (HeatMapCalendar.rowCount + 1),
           width: constraints.maxWidth,
           child: Row(
             children: <Widget>[
@@ -86,13 +96,16 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                 currentOpacity: widget.showDateLabel ? widget.textOpacity : 0,
                 monthLabels: widget.monthsLabels,
                 dayTextColor: widget.dayTextColor,
-                minColumnsToCreate: _getMinColumnsToCreate(constraints.maxWidth) - 1,
+                minColumnsToCreate:
+                    _getMinColumnsToCreate(constraints.maxWidth) - 1,
                 date: DateTime.now(),
                 startDate: widget.startDate,
                 finishDate: widget.finishDate,
                 mondayFirstDayWeek: widget.mondayfirstDayWeek,
                 onTapHeatMapDay: widget.onTapHeatMapDay,
-              )
+                activeDayColor: widget.activeSquareColor,
+                disabledDayColor: widget.disabledSquareColor,
+              ),
             ],
           ),
         );
