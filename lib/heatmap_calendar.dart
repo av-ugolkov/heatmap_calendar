@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_day.dart';
 import 'package:heatmap_calendar/time_utils.dart';
@@ -34,8 +32,6 @@ class HeatMapCalendar extends StatefulWidget {
   final bool mondayfirstDayWeek;
   final TapHeatMapDayCallback? onTapHeatMapDay;
 
-  final bool showSelectDate;
-
   const HeatMapCalendar({
     Key? key,
     required this.startDate,
@@ -54,7 +50,6 @@ class HeatMapCalendar extends StatefulWidget {
     this.safetyMargin = 5,
     this.mondayfirstDayWeek = true,
     this.onTapHeatMapDay,
-    this.showSelectDate = false,
   }) : super(key: key);
 
   @override
@@ -62,8 +57,6 @@ class HeatMapCalendar extends StatefulWidget {
 }
 
 class HeatMapCalendarState extends State<HeatMapCalendar> {
-  bool displayDates = false;
-
   int _getMinColumnsToCreate(double maxWidth) {
     assert(maxWidth > (2 * (HeatMapCalendar.edgeSize + widget.squareSize)));
 
@@ -75,10 +68,10 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        log(constraints.maxHeight.toString());
         return SizedBox(
           height: (widget.squareSize + HeatMapCalendar.edgeSize) *
-              (HeatMapCalendar.rowCount + 1),
+                  HeatMapCalendar.rowCount -
+              HeatMapCalendar.edgeSize,
           width: constraints.maxWidth,
           child: Row(
             children: <Widget>[

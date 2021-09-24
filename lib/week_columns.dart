@@ -126,25 +126,25 @@ class WeekColumns extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: LayoutBuilder(builder: (context, constraints) {
-        final items = buildWeekItems();
-        var columnCurrentDay =
-            DateUtils.dateOnly(DateTime.now()).difference(startDate).inDays ~/
-                DateTime.daysPerWeek;
-        var offset =
-            (columnCurrentDay + 1) * (squareSize + 4) - constraints.maxWidth;
+    final items = buildWeekItems();
+    var columnCurrentDay =
+        DateUtils.dateOnly(DateTime.now()).difference(startDate).inDays ~/
+            DateTime.daysPerWeek;
 
-        var scrollController = ScrollController(initialScrollOffset: offset);
-        return ListView.builder(
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return items[index];
-          },
-        );
-      }),
+    var offset = (columnCurrentDay + 2) * (squareSize + 4) -
+        MediaQuery.of(context).size.width;
+
+    var scrollController = ScrollController(initialScrollOffset: offset);
+
+    return Expanded(
+      child: ListView.builder(
+        controller: scrollController,
+        scrollDirection: Axis.horizontal,
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return items[index];
+        },
+      ),
     );
   }
 }
