@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: HeatMapCalendar(
-          startDate: DateTime.now().subtract(const Duration(days: 32)),
+          startDate: DateTime.now().subtract(const Duration(days: 222)),
           finishDate: DateTime.now().add(const Duration(days: 80)),
           input: {
             DateUtils.dateOnly(
@@ -56,21 +56,14 @@ class _MyHomePageState extends State<MyHomePage> {
             10: Colors.green.shade300,
             30: Colors.green.shade500
           },
-          weekDaysLabels: const [
-            'M',
-            'T',
-            'W',
-            'T',
-            'F',
-            'S',
-            'S',
-          ],
+          weekDaysLabels: TimeUtils.defaultWeekLabels,
           monthsLabels: TimeUtils.defaultMonthsLabels,
-          squareSize: 20.0,
+          squareSize: 18.0,
           textOpacity: 0.3,
-          showDateLabel: false,
+          showDateLabel: true,
           labelTextColor: Colors.blueGrey,
-          dayTextColor: Colors.blue.shade500,
+          textStyleDateText:
+              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           onTapHeatMapDay: (tapDate) {
             log(tapDate.toString());
           },
