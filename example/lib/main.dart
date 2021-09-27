@@ -43,12 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
           startDate: DateTime.now().subtract(const Duration(days: 222)),
           finishDate: DateTime.now().add(const Duration(days: 80)),
           input: {
-            DateUtils.dateOnly(
-                DateTime.now().subtract(const Duration(days: 3))): 5,
-            DateUtils.dateOnly(
-                DateTime.now().subtract(const Duration(days: 2))): 35,
-            DateUtils.dateOnly(
-                DateTime.now().subtract(const Duration(days: 1))): 14,
+            DateUtils.dateOnly(DateTime.now().subtract(const Duration(days: 3))): 5,
+            DateUtils.dateOnly(DateTime.now().subtract(const Duration(days: 2))): 35,
+            DateUtils.dateOnly(DateTime.now().subtract(const Duration(days: 1))): 14,
             DateUtils.dateOnly(DateTime.now()): 5,
           },
           colorThresholds: {
@@ -58,12 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           weekDaysLabels: TimeUtils.defaultWeekLabels,
           monthsLabels: TimeUtils.defaultMonthsLabels,
-          squareSize: 18.0,
+          squareSize: 22.0,
           textOpacity: 0.3,
           showDateLabel: true,
           labelTextColor: Colors.blueGrey,
-          textStyleDateText:
-              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          textStyleDateText: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           onTapHeatMapDay: (tapDate) {
             log(tapDate.toString());
           },
