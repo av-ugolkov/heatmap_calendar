@@ -8,6 +8,8 @@ jobs:
   build:
     name: Build Apps
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./example
     steps:
       - name: Export Release Timestamp
         run: echo "APP_VERSION=v$(date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
@@ -26,3 +28,4 @@ jobs:
         run: flutter pub get
       - name: Build Android App
         run: flutter build apk --split-per-abi
+        working-directory: ${{env.working-directory}}
