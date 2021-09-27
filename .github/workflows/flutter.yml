@@ -32,5 +32,6 @@ jobs:
       - name: Release Apps
         uses: ncipollo/release-action@v1
         with:
+          tag: ${{ env.APP_VERSION }}
           name: ${{ env.APP_VERSION }}
           artifacts: 'build/app/outputs/apk/release/*.apk'
