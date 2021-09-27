@@ -29,6 +29,8 @@ jobs:
       - name: Build Android App
         run: flutter build apk --split-per-abi
         working-directory: ${{env.working-directory}}
+      - name: Release Apps
+        uses: ncipollo/release-action@v1
         with:
           name: ${{ env.APP_VERSION }}
           artifacts: 'build/app/outputs/apk/release/*.apk'
