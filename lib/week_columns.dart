@@ -12,12 +12,13 @@ class WeekColumns extends StatelessWidget {
   final List<String> monthLabels;
   final Color activeDayColor;
   final Color disabledDayColor;
+  final Color selectSquareColor;
   final int minColumnsToCreate;
   final DateTime startDate;
   final DateTime finishDate;
   final DateTime date;
   final bool mondayFirstDayWeek;
-  final TapHeatMapDayCallback? onTapHeatMapDay;
+  final Function(DateTime)? onTapHeatMapDay;
   final TextStyle? textStyleDate;
 
   const WeekColumns({
@@ -35,6 +36,7 @@ class WeekColumns extends StatelessWidget {
     required this.mondayFirstDayWeek,
     required this.activeDayColor,
     required this.disabledDayColor,
+    required this.selectSquareColor,
     this.onTapHeatMapDay,
     this.textStyleDate,
   }) : super(key: key);
@@ -50,6 +52,8 @@ class WeekColumns extends StatelessWidget {
 
     List<Widget> columnItems = [];
     List<int> months = [];
+
+    VoidCallback? _callbackSelectDay;
 
     for (int i = 0; i < amount; i++) {
       if (i % 8 == 0) {
@@ -69,18 +73,24 @@ class WeekColumns extends StatelessWidget {
         DateTime currentDate = dateList.first;
         dateList.removeAt(0);
 
-        var nonExistDay =
-            currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
+        var nonExistDay = currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
         HeatMapDay heatMapDay = HeatMapDay(
           value: input[currentDate] ?? 0,
           thresholds: colorThresholds,
           size: squareSize,
           activeColor: activeDayColor,
           disabledColor: disabledDayColor,
+          selectColor: selectSquareColor,
           currentDay: currentDate,
           opacity: currentOpacity,
           textStyle: textStyleDate,
-          onTapCallback: nonExistDay ? null : onTapHeatMapDay,
+          onTapCallback: nonExistDay
+              ? null
+              : (callback, date) {
+                  _callbackSelectDay?.call();
+                  _callbackSelectDay = callback;
+                  onTapHeatMapDay?.call(date);
+                },
         );
         columnItems.add(heatMapDay);
         if (columnItems.length == 8) {
@@ -104,8 +114,7 @@ class WeekColumns extends StatelessWidget {
     if (mondayFirstDayWeek) {
       offsetDay = DateTime.daysPerWeek - finishDate.weekday;
     } else {
-      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) %
-          DateTime.daysPerWeek;
+      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) % DateTime.daysPerWeek;
     }
 
     var lastDay = DateUtils.dateOnly(finishDate).add(Duration(days: offsetDay));
@@ -116,8 +125,7 @@ class WeekColumns extends StatelessWidget {
       var addFirstDays = countFirstColumns * DateTime.daysPerWeek;
       firstDay = firstDay.subtract(Duration(days: addFirstDays));
       lastDay = lastDay.add(Duration(
-          days: (minColumnsToCreate - createColumn - countFirstColumns) *
-              DateTime.daysPerWeek));
+          days: (minColumnsToCreate - createColumn - countFirstColumns) * DateTime.daysPerWeek));
     }
     var dateList = TimeUtils.datesBetween(firstDay, lastDay);
 
@@ -128,11 +136,9 @@ class WeekColumns extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = buildWeekItems();
     var columnCurrentDay =
-        DateUtils.dateOnly(DateTime.now()).difference(startDate).inDays ~/
-            DateTime.daysPerWeek;
+        DateUtils.dateOnly(DateTime.now()).difference(startDate).inDays ~/ DateTime.daysPerWeek;
 
-    var offset = (columnCurrentDay + 2) * (squareSize + 4) -
-        MediaQuery.of(context).size.width;
+    var offset = (columnCurrentDay + 2) * (squareSize + 4) - MediaQuery.of(context).size.width;
 
     var scrollController = ScrollController(initialScrollOffset: offset);
 

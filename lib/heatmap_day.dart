@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-typedef TapHeatMapDayCallback = void Function(DateTime);
+typedef TapHeatMapDayCallback = void Function(VoidCallback, DateTime);
 
-class HeatMapDay extends StatelessWidget {
+class HeatMapDay extends StatefulWidget {
   final int value;
   final double size;
   final Map<int, Color> thresholds;
@@ -13,6 +13,7 @@ class HeatMapDay extends StatelessWidget {
   final Duration animationDuration;
   final TextStyle? textStyle;
   final TapHeatMapDayCallback? onTapCallback;
+  final Color selectColor;
 
   const HeatMapDay(
       {Key? key,
@@ -21,6 +22,7 @@ class HeatMapDay extends StatelessWidget {
       required this.thresholds,
       this.activeColor = Colors.grey,
       this.disabledColor = Colors.black12,
+      required this.selectColor,
       required this.currentDay,
       this.opacity = 0.3,
       this.animationDuration = const Duration(milliseconds: 300),
@@ -28,10 +30,24 @@ class HeatMapDay extends StatelessWidget {
       this.onTapCallback})
       : super(key: key);
 
-  Color getColorFromThreshold() {
-    Color color = activeColor;
-    thresholds.forEach((mapKey, mapColor) {
-      if (value >= mapKey) {
+  @override
+  State<HeatMapDay> createState() => _HeatMapDayState();
+}
+
+class _HeatMapDayState extends State<HeatMapDay> {
+  bool _isSelect = false;
+
+  @override
+  void didUpdateWidget(HeatMapDay newWidget) {
+    if (widget != newWidget) {
+      super.didUpdateWidget(newWidget);
+    }
+  }
+
+  Color _getColorFromThreshold() {
+    Color color = widget.activeColor;
+    widget.thresholds.forEach((mapKey, mapColor) {
+      if (widget.value >= mapKey) {
         color = mapColor;
       }
     });
@@ -39,22 +55,38 @@ class HeatMapDay extends StatelessWidget {
     return color;
   }
 
+  void deselect() {
+    setState(() {
+      _isSelect = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTapCallback?.call(currentDay),
+      onTap: () {
+        widget.onTapCallback?.call(deselect, widget.currentDay);
+        setState(() {
+          _isSelect = true;
+        });
+      },
       child: Container(
         alignment: Alignment.center,
-        height: size,
-        width: size,
-        color: onTapCallback == null ? disabledColor : getColorFromThreshold(),
-        margin: const EdgeInsets.all(2.0),
-        child: AnimatedOpacity(
-          opacity: opacity,
-          duration: animationDuration,
-          child: Text(
-            currentDay.day.toString(),
-            style: textStyle,
+        width: widget.size + 4,
+        height: widget.size + 4,
+        color: _isSelect ? widget.selectColor : Colors.white,
+        child: Container(
+          alignment: Alignment.center,
+          width: widget.size,
+          height: widget.size,
+          color: widget.onTapCallback == null ? widget.disabledColor : _getColorFromThreshold(),
+          child: AnimatedOpacity(
+            opacity: widget.opacity,
+            duration: widget.animationDuration,
+            child: Text(
+              widget.currentDay.day.toString(),
+              style: widget.textStyle,
+            ),
           ),
         ),
       ),

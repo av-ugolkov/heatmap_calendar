@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:heatmap_calendar/heatmap_day.dart';
 import 'package:heatmap_calendar/time_utils.dart';
 import 'package:heatmap_calendar/week_columns.dart';
 import 'package:heatmap_calendar/week_labels.dart';
@@ -22,6 +21,7 @@ class HeatMapCalendar extends StatefulWidget {
   final Color activeSquareColor;
   final Color disabledSquareColor;
   final double squareSize;
+  final Color selectSquareColor;
   final bool showDateLabel;
 
   final TextStyle? textStyleDateText;
@@ -30,7 +30,7 @@ class HeatMapCalendar extends StatefulWidget {
   final double safetyMargin;
 
   final bool mondayfirstDayWeek;
-  final TapHeatMapDayCallback? onTapHeatMapDay;
+  final Function(DateTime)? onTapHeatMapDay;
 
   const HeatMapCalendar({
     Key? key,
@@ -50,6 +50,7 @@ class HeatMapCalendar extends StatefulWidget {
     this.mondayfirstDayWeek = true,
     this.onTapHeatMapDay,
     this.textStyleDateText,
+    this.selectSquareColor = Colors.green,
   }) : super(key: key);
 
   @override
@@ -69,8 +70,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SizedBox(
-          height: (widget.squareSize + HeatMapCalendar.edgeSize) *
-                  HeatMapCalendar.rowCount -
+          height: (widget.squareSize + HeatMapCalendar.edgeSize) * HeatMapCalendar.rowCount -
               HeatMapCalendar.edgeSize,
           width: constraints.maxWidth,
           child: Row(
@@ -88,8 +88,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                 colorThresholds: widget.colorThresholds,
                 currentOpacity: widget.showDateLabel ? widget.textOpacity : 0,
                 monthLabels: widget.monthsLabels,
-                minColumnsToCreate:
-                    _getMinColumnsToCreate(constraints.maxWidth) - 1,
+                minColumnsToCreate: _getMinColumnsToCreate(constraints.maxWidth) - 1,
                 date: DateTime.now(),
                 startDate: widget.startDate,
                 finishDate: widget.finishDate,
@@ -97,6 +96,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                 onTapHeatMapDay: widget.onTapHeatMapDay,
                 activeDayColor: widget.activeSquareColor,
                 disabledDayColor: widget.disabledSquareColor,
+                selectSquareColor: widget.selectSquareColor,
                 textStyleDate: widget.textStyleDateText,
               ),
             ],
