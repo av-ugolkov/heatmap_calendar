@@ -24,7 +24,7 @@ class HeatMapDay extends StatefulWidget {
       this.disabledColor = Colors.black12,
       required this.selectColor,
       required this.currentDay,
-      this.opacity = 0.3,
+      this.opacity = 1,
       this.animationDuration = const Duration(milliseconds: 300),
       this.textStyle,
       this.onTapCallback})
@@ -36,13 +36,6 @@ class HeatMapDay extends StatefulWidget {
 
 class _HeatMapDayState extends State<HeatMapDay> {
   bool _isSelect = false;
-
-  @override
-  void didUpdateWidget(HeatMapDay newWidget) {
-    if (widget != newWidget) {
-      super.didUpdateWidget(newWidget);
-    }
-  }
 
   Color _getColorFromThreshold() {
     Color color = widget.activeColor;
@@ -65,10 +58,12 @@ class _HeatMapDayState extends State<HeatMapDay> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onTapCallback?.call(deselect, widget.currentDay);
-        setState(() {
-          _isSelect = true;
-        });
+        if (widget.onTapCallback != null) {
+          widget.onTapCallback?.call(deselect, widget.currentDay);
+          setState(() {
+            _isSelect = true;
+          });
+        }
       },
       child: Container(
         alignment: Alignment.center,
