@@ -75,6 +75,7 @@ class WeekColumns extends StatelessWidget {
 
         var nonExistDay = currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
         HeatMapDay heatMapDay = HeatMapDay(
+          key: Key(currentDate.toString()),
           value: input[currentDate] ?? 0,
           thresholds: colorThresholds,
           size: squareSize,
@@ -143,13 +144,10 @@ class WeekColumns extends StatelessWidget {
     var scrollController = ScrollController(initialScrollOffset: offset);
 
     return Expanded(
-      child: ListView.builder(
+      child: ListView(
         controller: scrollController,
         scrollDirection: Axis.horizontal,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return items[index];
-        },
+        children: items,
       ),
     );
   }
