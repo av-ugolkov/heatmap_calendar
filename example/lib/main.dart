@@ -56,10 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
           weekDaysLabels: TimeUtils.defaultWeekLabels,
           monthsLabels: TimeUtils.defaultMonthsLabels,
           squareSize: 22.0,
-          textOpacity: 0.3,
-          showDateLabel: true,
+          textOpacity: 1,
+          showDateLabel: false,
           labelTextColor: Colors.blueGrey,
-          textStyleDateText: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          textStyleDateText: const TextStyle(color: Colors.white),
           onTapHeatMapDay: (tapDate) {
             log(tapDate.toString());
           },
