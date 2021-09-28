@@ -3,7 +3,7 @@ on:
     branches:
       - master
 
-name: Flutter Build
+name: Build apk Flutter
 jobs:
   build:
     name: Build Apps
@@ -34,4 +34,5 @@ jobs:
         with:
           tag: ${{ env.APP_VERSION }}
           name: ${{ env.APP_VERSION }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: 'build/app/outputs/apk/release/*.apk'
