@@ -34,8 +34,12 @@ class HeatMapDay extends StatefulWidget {
   State<HeatMapDay> createState() => _HeatMapDayState();
 }
 
-class _HeatMapDayState extends State<HeatMapDay> {
+class _HeatMapDayState extends State<HeatMapDay>
+    with AutomaticKeepAliveClientMixin {
   bool _isSelect = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   Color _getColorFromThreshold() {
     Color color = widget.activeColor;
@@ -74,7 +78,9 @@ class _HeatMapDayState extends State<HeatMapDay> {
           alignment: Alignment.center,
           width: widget.size,
           height: widget.size,
-          color: widget.onTapCallback == null ? widget.disabledColor : _getColorFromThreshold(),
+          color: widget.onTapCallback == null
+              ? widget.disabledColor
+              : _getColorFromThreshold(),
           child: AnimatedOpacity(
             opacity: widget.opacity,
             duration: widget.animationDuration,
