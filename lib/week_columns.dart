@@ -73,7 +73,8 @@ class WeekColumns extends StatelessWidget {
         DateTime currentDate = dateList.first;
         dateList.removeAt(0);
 
-        var nonExistDay = currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
+        var nonExistDay =
+            currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
         HeatMapDay heatMapDay = HeatMapDay(
           key: Key(currentDate.toString()),
           value: input[currentDate] ?? 0,
@@ -115,7 +116,8 @@ class WeekColumns extends StatelessWidget {
     if (mondayFirstDayWeek) {
       offsetDay = DateTime.daysPerWeek - finishDate.weekday;
     } else {
-      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) % DateTime.daysPerWeek;
+      offsetDay = (DateTime.daysPerWeek - finishDate.weekday - 1) %
+          DateTime.daysPerWeek;
     }
 
     var lastDay = DateUtils.dateOnly(finishDate).add(Duration(days: offsetDay));
@@ -126,7 +128,8 @@ class WeekColumns extends StatelessWidget {
       var addFirstDays = countFirstColumns * DateTime.daysPerWeek;
       firstDay = firstDay.subtract(Duration(days: addFirstDays));
       lastDay = lastDay.add(Duration(
-          days: (minColumnsToCreate - createColumn - countFirstColumns) * DateTime.daysPerWeek));
+          days: (minColumnsToCreate - createColumn - countFirstColumns) *
+              DateTime.daysPerWeek));
     }
     var dateList = TimeUtils.datesBetween(firstDay, lastDay);
 
@@ -137,17 +140,22 @@ class WeekColumns extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = buildWeekItems();
     var columnCurrentDay =
-        DateUtils.dateOnly(DateTime.now()).difference(startDate).inDays ~/ DateTime.daysPerWeek;
+        DateUtils.dateOnly(DateTime.now()).difference(startDate).inDays ~/
+            DateTime.daysPerWeek;
 
-    var offset = (columnCurrentDay + 2) * (squareSize + 4) - MediaQuery.of(context).size.width;
+    var offset = (columnCurrentDay + 2) * (squareSize + 4) -
+        MediaQuery.of(context).size.width;
 
     var scrollController = ScrollController(initialScrollOffset: offset);
 
     return Expanded(
-      child: ListView(
+      child: ListView.builder(
         controller: scrollController,
         scrollDirection: Axis.horizontal,
-        children: items,
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return items[index];
+        },
       ),
     );
   }
