@@ -60,6 +60,7 @@ class _HeatMapDayState extends State<HeatMapDay>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GestureDetector(
       onTap: () {
         if (widget.onTapCallback != null) {
