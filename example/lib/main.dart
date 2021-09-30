@@ -73,7 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),*/
             HeatMapCalendarMonth(
               startDate: DateTime(2021, 9, 1),
-              finishDate: DateTime(2022, 1, 1),
+              finishDate: DateTime(2021, 9, 21),
+              heightCell: 24,
             ),
           ],
         ),
