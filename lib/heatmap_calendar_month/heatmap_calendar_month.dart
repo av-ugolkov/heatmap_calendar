@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_day_label.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_month.dart';
 import 'package:heatmap_calendar/time_utils.dart';
 
@@ -48,6 +49,7 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
       var cellWidth = (constraints.maxWidth - widget.marginHorizontal) /
               DateTime.daysPerWeek -
           HeatMapCalendarMonth.margin;
+
       return SizedBox(
         width: constraints.maxWidth - widget.marginHorizontal,
         child: Column(
@@ -56,32 +58,8 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
           children: [
             Text(
                 '${widget.startDate.year} ${widget.monthsLabels[widget.startDate.month]}'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                    width: cellWidth + 4,
-                    child: const Center(child: Text('M'))),
-                SizedBox(
-                    width: cellWidth + 4,
-                    child: const Center(child: Text('T'))),
-                SizedBox(
-                    width: cellWidth + 4,
-                    child: const Center(child: Text('W'))),
-                SizedBox(
-                    width: cellWidth + 4,
-                    child: const Center(child: Text('T'))),
-                SizedBox(
-                    width: cellWidth + 4,
-                    child: const Center(child: Text('F'))),
-                SizedBox(
-                    width: cellWidth + 4,
-                    child: const Center(child: Text('S'))),
-                SizedBox(
-                    width: cellWidth + 4,
-                    child: const Center(child: Text('S'))),
-              ],
-            ),
+            HeatMapDayLabel(
+                labelDays: widget.weekDaysLabels, cellWidth: cellWidth),
             HeatMapMonth(
               startDate: widget.startDate,
               finishDate: widget.finishDate,
@@ -89,7 +67,7 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
               cellHeight: widget.cellHeight,
               cellWidth: cellWidth,
               disableOpacity: widget.disableOpacity,
-            ),
+            )
           ],
         ),
       );
