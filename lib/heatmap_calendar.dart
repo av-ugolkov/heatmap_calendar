@@ -8,7 +8,6 @@ class HeatMapCalendar extends StatefulWidget {
   static const double edgeSize = 4;
 
   final List<String> weekDaysLabels;
-
   final List<String> monthsLabels;
 
   final DateTime startDate;
@@ -70,7 +69,8 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SizedBox(
-          height: (widget.squareSize + HeatMapCalendar.edgeSize) * HeatMapCalendar.rowCount -
+          height: (widget.squareSize + HeatMapCalendar.edgeSize) *
+                  HeatMapCalendar.rowCount -
               HeatMapCalendar.edgeSize,
           width: constraints.maxWidth,
           child: Row(
@@ -88,7 +88,8 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                 colorThresholds: widget.colorThresholds,
                 currentOpacity: widget.showDateLabel ? widget.textOpacity : 0,
                 monthLabels: widget.monthsLabels,
-                minColumnsToCreate: _getMinColumnsToCreate(constraints.maxWidth) - 1,
+                minColumnsToCreate:
+                    _getMinColumnsToCreate(constraints.maxWidth) - 1,
                 date: DateTime.now(),
                 startDate: widget.startDate,
                 finishDate: widget.finishDate,
