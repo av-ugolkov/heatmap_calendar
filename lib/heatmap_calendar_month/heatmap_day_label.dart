@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HeatMapDayLabel extends StatelessWidget {
+  static const int marginHorizontal = 4;
   final List<String> labelDays;
   final double cellWidth;
 
@@ -13,7 +14,9 @@ class HeatMapDayLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final labels = labelDays.map((label) {
-      return SizedBox(width: cellWidth + 4, child: Center(child: Text(label)));
+      return SizedBox(
+          width: cellWidth + marginHorizontal,
+          child: Center(child: Text(label)));
     }).toList();
 
     return Row(
