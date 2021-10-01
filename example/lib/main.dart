@@ -39,45 +39,62 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            /*HeatMapCalendar(
-              startDate: DateTime.now().subtract(const Duration(days: 222)),
-              finishDate: DateTime.now().add(const Duration(days: 80)),
-              input: {
-                DateUtils.dateOnly(
-                    DateTime.now().subtract(const Duration(days: 3))): 5,
-                DateUtils.dateOnly(
-                    DateTime.now().subtract(const Duration(days: 2))): 35,
-                DateUtils.dateOnly(
-                    DateTime.now().subtract(const Duration(days: 1))): 14,
-                DateUtils.dateOnly(DateTime.now()): 5,
-              },
-              colorThresholds: {
-                1: Colors.green.shade100,
-                10: Colors.green.shade300,
-                30: Colors.green.shade500
-              },
-              weekDaysLabels: TimeUtils.defaultWeekLabels,
-              monthsLabels: TimeUtils.defaultMonthsLabels,
-              squareSize: 22.0,
-              textOpacity: 1,
-              showDateLabel: false,
-              labelTextColor: Colors.blueGrey,
-              textStyleDateText: const TextStyle(color: Colors.white),
-              onTapHeatMapDay: (tapDate) {
-                log(tapDate.toString());
-              },
-            ),*/
-            HeatMapCalendarMonth(
-              startDate: DateTime(2021, 9, 1),
-              finishDate: DateTime(2021, 9, 21),
-              heightCell: 24,
-            ),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          HeatMapCalendar(
+            startDate: DateTime.now().subtract(const Duration(days: 222)),
+            finishDate: DateTime.now().add(const Duration(days: 80)),
+            input: {
+              DateUtils.dateOnly(
+                  DateTime.now().subtract(const Duration(days: 3))): 5,
+              DateUtils.dateOnly(
+                  DateTime.now().subtract(const Duration(days: 2))): 35,
+              DateUtils.dateOnly(
+                  DateTime.now().subtract(const Duration(days: 1))): 14,
+              DateUtils.dateOnly(DateTime.now()): 5,
+            },
+            colorThresholds: {
+              1: Colors.green.shade100,
+              10: Colors.green.shade300,
+              30: Colors.green.shade500
+            },
+            weekDaysLabels: TimeUtils.defaultWeekLabels,
+            monthsLabels: TimeUtils.defaultMonthsLabels,
+            squareSize: 22.0,
+            textOpacity: 1,
+            showDateLabel: false,
+            labelTextColor: Colors.blueGrey,
+            textStyleDateText: const TextStyle(color: Colors.white),
+            onTapHeatMapDay: (tapDate) {
+              log(tapDate.toString());
+            },
+          ),
+          HeatMapCalendarMonth(
+            startDate: DateTime(2021, 9, 4),
+            finishDate: DateTime(2022, 9, 21),
+            input: {
+              DateUtils.dateOnly(
+                  DateTime.now().subtract(const Duration(days: 3))): 5,
+              DateUtils.dateOnly(
+                  DateTime.now().subtract(const Duration(days: 2))): 35,
+              DateUtils.dateOnly(
+                  DateTime.now().subtract(const Duration(days: 1))): 14,
+              DateUtils.dateOnly(DateTime.now()): 5,
+            },
+            colorThresholds: {
+              1: Colors.green.shade100,
+              10: Colors.green.shade300,
+              30: Colors.green.shade500
+            },
+            onTapHeatMapDay: (tapDate) {
+              log(tapDate.toString());
+            },
+            cellHeight: 28,
+            weekDaysLabels: TimeUtils.defaultWeekLabels,
+            marginHorizontal: 20,
+          ),
+        ],
       ),
     );
   }
