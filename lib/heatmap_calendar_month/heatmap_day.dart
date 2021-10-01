@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_day.dart';
 
 class HeatMapDay extends StatefulWidget {
+  static const int margin = 4;
+
   final DateTime currentDay;
   final int value;
   final Map<int, Color> thresholds;
@@ -71,8 +73,8 @@ class _HeatMapDayState extends State<HeatMapDay>
         opacity: widget.opacity,
         child: Container(
           alignment: Alignment.center,
-          width: widget.width + 4,
-          height: widget.height + 4,
+          width: widget.width + HeatMapDay.margin,
+          height: widget.height + HeatMapDay.margin,
           color: _isSelect ? widget.selectColor : Colors.white,
           child: Container(
             alignment: Alignment.center,
