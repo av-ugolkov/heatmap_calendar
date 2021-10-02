@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           HeatMapCalendarMonth(
-            startDate: DateTime(2021, 9, 4),
+            startDate: DateTime(2021, 9, 14),
             finishDate: DateTime(2022, 9, 21),
             input: {
               DateUtils.dateOnly(
