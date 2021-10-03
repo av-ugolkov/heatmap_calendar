@@ -47,7 +47,6 @@ class _HeatMapDayState extends State<HeatMapDay>
         color = mapColor;
       }
     });
-
     return color;
   }
 

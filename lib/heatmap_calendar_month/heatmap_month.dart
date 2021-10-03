@@ -5,6 +5,9 @@ class HeatMapMonth extends StatelessWidget {
   final DateTime startDate;
   final DateTime finishDate;
   final int addCountMonth;
+  final Map<DateTime, int> input;
+  final Map<int, Color> colorThresholds;
+  final Color selectColor;
   final Function(DateTime)? onTapHeatMapDay;
 
   final double cellWidth;
@@ -17,6 +20,9 @@ class HeatMapMonth extends StatelessWidget {
     required this.startDate,
     required this.finishDate,
     required this.addCountMonth,
+    required this.input,
+    required this.colorThresholds,
+    required this.selectColor,
     required this.onTapHeatMapDay,
     required this.cellWidth,
     required this.cellHeight,
@@ -48,8 +54,12 @@ class HeatMapMonth extends StatelessWidget {
     var month = <Row>[];
     var week = <HeatMapDay>[];
     for (var i = 0; i < 35; ++i) {
-      var nonExistDay =
-          currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
+      var nonExistDay = true;
+      if (currentDate.month == firstDate.month) {
+        nonExistDay =
+            currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
+      }
+
       var heatmapDay = HeatMapDay(
         currentDay: currentDate,
         onTapCallback: nonExistDay
@@ -62,9 +72,9 @@ class HeatMapMonth extends StatelessWidget {
         width: cellWidth,
         height: cellHeight,
         opacity: _getOpacity(currentDate, firstDate, lastDate),
-        thresholds: const <int, Color>{},
-        value: 0,
-        selectColor: Colors.green,
+        thresholds: colorThresholds,
+        value: input[currentDate] ?? 0,
+        selectColor: selectColor,
       );
       week.add(heatmapDay);
       if (week.length == 7) {
