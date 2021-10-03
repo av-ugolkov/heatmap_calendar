@@ -16,6 +16,7 @@ class HeatMapCalendarMonth extends StatefulWidget {
   final List<String> monthsLabels;
   final List<String> weekDaysLabels;
 
+  final Color selectColor;
   final Function(DateTime)? onTapHeatMapDay;
 
   final double cellHeight;
@@ -33,10 +34,11 @@ class HeatMapCalendarMonth extends StatefulWidget {
     required this.colorThresholds,
     this.monthsLabels = TimeUtils.defaultMonthsLabels,
     this.weekDaysLabels = TimeUtils.defaultWeekLabels,
+    this.selectColor = Colors.green,
     this.onTapHeatMapDay,
     this.cellHeight = 16.0,
-    this.opacityDisable = 0.2,
-    this.opacityDayOutOfMonth = 0.6,
+    this.opacityDisable = 0.3,
+    this.opacityDayOutOfMonth = 0.7,
     this.mondayFirstDayWeek = true,
     this.marginHorizontal = 0,
   }) : super(key: key);
@@ -85,6 +87,9 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
         startDate: widget.startDate,
         finishDate: widget.finishDate,
         addCountMonth: i,
+        input: widget.input,
+        colorThresholds: widget.colorThresholds,
+        selectColor: widget.selectColor,
         onTapHeatMapDay: widget.onTapHeatMapDay,
         cellHeight: widget.cellHeight,
         cellWidth: cellWidth,
