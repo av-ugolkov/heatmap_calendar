@@ -90,10 +90,12 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
               HeatMapDayLabel(
                 labelDays: widget.weekDaysLabels,
                 cellWidth: cellWidth,
+                cellHeight: widget.cellHeight,
               ),
               HeatMapListViewMonths(
                 listMonths: _generateListMonths(cellWidth),
-                heightWidget: 6 * widget.cellHeight,
+                heightWidget:
+                    5 * (widget.cellHeight + HeatMapCalendarMonth.margin),
                 callbackEndScroll: (indexMonth) {
                   setState(() {
                     var scrollDate = DateUtils.addMonthsToMonthDate(
