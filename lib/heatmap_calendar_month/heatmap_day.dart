@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:heatmap_calendar/data/data_heat_map_calendar.dart';
+import 'package:heatmap_calendar/heatmap_calendar_month/inherited_heatmap_calendar_month.dart';
 import 'package:heatmap_calendar/heatmap_day.dart';
 
 class HeatMapDay extends StatefulWidget {
   static const int margin = 4;
 
   final DateTime currentDay;
-  final int value;
-  final Map<int, Color> thresholds;
   final Color activeColor;
   final Color disabledColor;
-  final Color selectColor;
   final double width;
-  final double height;
   final double opacity;
   final TapHeatMapDayCallback? onTapCallback;
 
   const HeatMapDay(
       {Key? key,
       required this.currentDay,
-      required this.value,
       required this.width,
-      required this.height,
       required this.opacity,
-      required this.thresholds,
-      required this.selectColor,
       this.activeColor = Colors.grey,
       this.disabledColor = Colors.black12,
       this.onTapCallback})
@@ -40,10 +34,11 @@ class _HeatMapDayState extends State<HeatMapDay>
   @override
   bool get wantKeepAlive => true;
 
-  Color _getColorFromThreshold() {
+  Color _getColorFromThreshold(DataHeatMapCalendar data) {
     Color color = widget.activeColor;
-    widget.thresholds.forEach((mapKey, mapColor) {
-      if (widget.value >= mapKey) {
+    var value = data.input[widget.currentDay] ?? 0;
+    data.colorThresholds.forEach((mapKey, mapColor) {
+      if (value >= mapKey) {
         color = mapColor;
       }
     });
@@ -59,6 +54,7 @@ class _HeatMapDayState extends State<HeatMapDay>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    var data = InheritedHeatMapCalendarMonth.of(context);
     return GestureDetector(
       onTap: () {
         if (widget.onTapCallback != null) {
@@ -73,15 +69,15 @@ class _HeatMapDayState extends State<HeatMapDay>
         child: Container(
           alignment: Alignment.center,
           width: widget.width + HeatMapDay.margin,
-          height: widget.height + HeatMapDay.margin,
-          color: _isSelect ? widget.selectColor : Colors.white,
+          height: data.cellHeight + HeatMapDay.margin,
+          color: _isSelect ? data.selectColor : Colors.white,
           child: Container(
             alignment: Alignment.center,
             width: widget.width,
-            height: widget.height,
+            height: data.cellHeight,
             color: widget.onTapCallback == null
                 ? widget.disabledColor
-                : _getColorFromThreshold(),
+                : _getColorFromThreshold(data),
             child: Center(
               child: Text(widget.currentDay.day.toString()),
             ),
