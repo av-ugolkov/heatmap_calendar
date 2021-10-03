@@ -87,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
               10: Colors.green.shade300,
               30: Colors.green.shade500
             },
+            selectColor: Colors.orange,
             onTapHeatMapDay: (tapDate) {
               log(tapDate.toString());
             },
