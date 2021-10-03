@@ -1,48 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:heatmap_calendar/data/data_heat_map_calendar.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_day.dart';
+import 'package:heatmap_calendar/heatmap_calendar_month/inherited_heatmap_calendar_month.dart';
 
 class HeatMapMonth extends StatelessWidget {
-  final DateTime startDate;
-  final DateTime finishDate;
   final int addCountMonth;
-  final Map<DateTime, int> input;
-  final Map<int, Color> colorThresholds;
-  final Color selectColor;
-  final Function(DateTime)? onTapHeatMapDay;
-
   final double cellWidth;
-  final double cellHeight;
-  final double opacityDisable;
-  final double opacityDayOutOfMonth;
 
   const HeatMapMonth({
     Key? key,
-    required this.startDate,
-    required this.finishDate,
     required this.addCountMonth,
-    required this.input,
-    required this.colorThresholds,
-    required this.selectColor,
-    required this.onTapHeatMapDay,
     required this.cellWidth,
-    required this.cellHeight,
-    required this.opacityDisable,
-    required this.opacityDayOutOfMonth,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var data = InheritedHeatMapCalendarMonth.of(context);
+
     var firstDateMonth =
-        DateUtils.addMonthsToMonthDate(startDate, addCountMonth);
+        DateUtils.addMonthsToMonthDate(data.startDate, addCountMonth);
     var lastDateMonth = DateTime(firstDateMonth.year, firstDateMonth.month,
         DateUtils.getDaysInMonth(firstDateMonth.year, firstDateMonth.month));
-    var month = _generateMonth(firstDateMonth, lastDateMonth, cellWidth);
+    var month = _generateMonth(data, firstDateMonth, lastDateMonth, cellWidth);
 
     return Column(children: month);
   }
 
-  List<Row> _generateMonth(
-      DateTime firstDate, DateTime lastDate, double cellWidth) {
+  List<Row> _generateMonth(DataHeatMapCalendar data, DateTime firstDate,
+      DateTime lastDate, double cellWidth) {
     final firstDayMonth = DateTime(firstDate.year, firstDate.month, 1);
     var firstDayWeek = firstDayMonth.weekday;
 
@@ -56,8 +41,8 @@ class HeatMapMonth extends StatelessWidget {
     for (var i = 0; i < 35; ++i) {
       var nonExistDay = true;
       if (currentDate.month == firstDate.month) {
-        nonExistDay =
-            currentDate.isBefore(startDate) || currentDate.isAfter(finishDate);
+        nonExistDay = currentDate.isBefore(data.startDate) ||
+            currentDate.isAfter(data.finishDate);
       }
 
       var heatmapDay = HeatMapDay(
@@ -67,14 +52,10 @@ class HeatMapMonth extends StatelessWidget {
             : (callback, date) {
                 _callbackSelectDay?.call();
                 _callbackSelectDay = callback;
-                onTapHeatMapDay?.call(date);
+                data.onTapHeatMapDay?.call(date);
               },
         width: cellWidth,
-        height: cellHeight,
-        opacity: _getOpacity(currentDate, firstDate, lastDate),
-        thresholds: colorThresholds,
-        value: input[currentDate] ?? 0,
-        selectColor: selectColor,
+        opacity: _getOpacity(data, currentDate, firstDate, lastDate),
       );
       week.add(heatmapDay);
       if (week.length == 7) {
@@ -90,13 +71,14 @@ class HeatMapMonth extends StatelessWidget {
     return month;
   }
 
-  double _getOpacity(
-      DateTime currentDay, DateTime firstDate, DateTime lastDate) {
-    if (currentDay.isBefore(startDate) || currentDay.isAfter(finishDate)) {
-      return opacityDisable;
+  double _getOpacity(DataHeatMapCalendar data, DateTime currentDay,
+      DateTime firstDate, DateTime lastDate) {
+    if (currentDay.isBefore(data.startDate) ||
+        currentDay.isAfter(data.finishDate)) {
+      return data.opacityDisable;
     }
     if (currentDay.isBefore(firstDate) || currentDay.isAfter(lastDate)) {
-      return opacityDayOutOfMonth;
+      return data.opacityDayOutOfMonth;
     }
     return 1;
   }

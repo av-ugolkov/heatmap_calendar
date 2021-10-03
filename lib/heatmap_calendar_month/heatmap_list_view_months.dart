@@ -4,20 +4,36 @@ import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_month.dart';
 class HeatMapListViewMonths extends StatelessWidget {
   final List<HeatMapMonth> listMonths;
   final double heightWidget;
-  const HeatMapListViewMonths(
-      {Key? key, required this.listMonths, required this.heightWidget})
-      : super(key: key);
+  final Function(int) callbackEndScroll;
+  const HeatMapListViewMonths({
+    Key? key,
+    required this.listMonths,
+    required this.heightWidget,
+    required this.callbackEndScroll,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
     return SizedBox(
       height: heightWidget,
-      child: ListView.builder(
-        physics: const PageScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        itemCount: listMonths.length,
-        itemBuilder: (context, index) {
-          return listMonths[index];
+      child: NotificationListener(
+        child: ListView.builder(
+          controller: scrollController,
+          physics: const PageScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemCount: listMonths.length,
+          itemBuilder: (context, index) {
+            return listMonths[index];
+          },
+        ),
+        onNotification: (notification) {
+          if (notification is ScrollEndNotification) {
+            var numMonth = notification.metrics.extentBefore /
+                notification.metrics.extentInside;
+            callbackEndScroll(numMonth.round());
+          }
+          return true;
         },
       ),
     );
