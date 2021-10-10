@@ -93,7 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             cellHeight: 28,
             weekDaysLabels: TimeUtils.defaultWeekLabels,
-            marginHorizontal: 20,
           ),
         ],
       ),
