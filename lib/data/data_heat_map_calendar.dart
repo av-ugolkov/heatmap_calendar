@@ -18,7 +18,6 @@ class DataHeatMapCalendar {
   final double opacityDayOutOfMonth;
 
   final bool mondayFirstDayWeek;
-  final int marginHorizontal;
 
   DataHeatMapCalendar({
     required this.startDate,
@@ -33,6 +32,5 @@ class DataHeatMapCalendar {
     required this.opacityDisable,
     required this.opacityDayOutOfMonth,
     required this.mondayFirstDayWeek,
-    required this.marginHorizontal,
   });
 }

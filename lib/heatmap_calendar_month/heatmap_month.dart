@@ -23,7 +23,13 @@ class HeatMapMonth extends StatelessWidget {
         DateUtils.getDaysInMonth(firstDateMonth.year, firstDateMonth.month));
     var month = _generateMonth(data, firstDateMonth, lastDateMonth, cellWidth);
 
-    return Column(children: month);
+    return Container(
+      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: month,
+      ),
+    );
   }
 
   List<Row> _generateMonth(DataHeatMapCalendar data, DateTime firstDate,
