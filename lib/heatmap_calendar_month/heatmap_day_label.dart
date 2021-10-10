@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_calendar_month.dart';
 
 class HeatMapDayLabel extends StatelessWidget {
-  static const int marginHorizontal = 4;
   final List<String> labelDays;
   final double cellWidth;
   final double? cellHeight;
@@ -17,13 +17,13 @@ class HeatMapDayLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final labels = labelDays.map((label) {
       return SizedBox(
-          width: cellWidth + marginHorizontal,
+          width: cellWidth + HeatMapCalendarMonth.margin,
           height: cellHeight,
           child: Center(child: Text(label)));
     }).toList();
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: labels,
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/data/data_heat_map_calendar.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_day_label.dart';
@@ -26,7 +28,6 @@ class HeatMapCalendarMonth extends StatefulWidget {
   final double opacityDayOutOfMonth;
 
   final bool mondayFirstDayWeek;
-  final int marginHorizontal;
 
   const HeatMapCalendarMonth({
     Key? key,
@@ -42,7 +43,6 @@ class HeatMapCalendarMonth extends StatefulWidget {
     this.opacityDisable = 0.3,
     this.opacityDayOutOfMonth = 0.7,
     this.mondayFirstDayWeek = true,
-    this.marginHorizontal = 0,
   }) : super(key: key);
 
   @override
@@ -74,14 +74,12 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
           cellHeight: widget.cellHeight,
           opacityDisable: widget.opacityDisable,
           opacityDayOutOfMonth: widget.opacityDayOutOfMonth,
-          mondayFirstDayWeek: widget.mondayFirstDayWeek,
-          marginHorizontal: widget.marginHorizontal),
+          mondayFirstDayWeek: widget.mondayFirstDayWeek),
       child: LayoutBuilder(builder: (context, constraints) {
-        var cellWidth = (constraints.maxWidth - widget.marginHorizontal) /
-                DateTime.daysPerWeek -
+        var cellWidth = (constraints.maxWidth - 40) / DateTime.daysPerWeek -
             HeatMapCalendarMonth.margin;
         return SizedBox(
-          width: constraints.maxWidth - widget.marginHorizontal,
+          width: (cellWidth + HeatMapCalendarMonth.margin) * 7,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,6 +95,7 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
                 heightWidget:
                     5 * (widget.cellHeight + HeatMapCalendarMonth.margin),
                 callbackEndScroll: (indexMonth) {
+                  log(constraints.maxWidth.toString());
                   setState(() {
                     var scrollDate = DateUtils.addMonthsToMonthDate(
                         widget.startDate, indexMonth);

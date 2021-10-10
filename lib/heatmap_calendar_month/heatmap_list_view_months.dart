@@ -31,6 +31,7 @@ class HeatMapListViewMonths extends StatelessWidget {
           if (notification is ScrollEndNotification) {
             var numMonth = notification.metrics.extentBefore /
                 notification.metrics.extentInside;
+            print(notification.metrics.pixels);
             callbackEndScroll(numMonth.round());
           }
           return true;
