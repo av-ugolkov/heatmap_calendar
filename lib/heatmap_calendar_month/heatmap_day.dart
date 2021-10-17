@@ -67,13 +67,13 @@ class _HeatMapDayState extends State<HeatMapDay>
         opacity: widget.opacity,
         child: Container(
           alignment: Alignment.center,
-          width: widget.width + HeatMapCalendarMonth.margin,
-          height: data.cellHeight + HeatMapCalendarMonth.margin,
+          width: widget.width,
+          height: data.cellHeight,
           color: _isSelect ? data.selectColor : Colors.white,
           child: Container(
             alignment: Alignment.center,
-            width: widget.width,
-            height: data.cellHeight,
+            width: widget.width - HeatMapCalendarMonth.margin,
+            height: data.cellHeight - HeatMapCalendarMonth.margin,
             color: widget.onTapCallback == null
                 ? widget.disabledColor
                 : _getColorFromThreshold(data),

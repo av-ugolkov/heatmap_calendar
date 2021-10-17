@@ -1,30 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_calendar_month.dart';
+
+import 'heatmap_calendar_month.dart';
 
 class HeatMapDayLabel extends StatelessWidget {
   final List<String> labelDays;
   final double cellWidth;
-  final double? cellHeight;
+  final double cellHeight;
 
   const HeatMapDayLabel({
     Key? key,
     required this.labelDays,
     required this.cellWidth,
-    this.cellHeight,
+    required this.cellHeight,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final labels = labelDays.map((label) {
-      return SizedBox(
-          width: cellWidth + HeatMapCalendarMonth.margin,
+      return Container(
+        alignment: Alignment.center,
+        width: cellWidth,
+        height: cellHeight,
+        child: Container(
+          alignment: Alignment.center,
+          width: cellWidth - HeatMapCalendarMonth.margin,
           height: cellHeight,
-          child: Center(child: Text(label)));
+          child: Text(label),
+        ),
+      );
     }).toList();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: labels,
+    return Container(
+      alignment: Alignment.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: labels,
+      ),
     );
   }
 }
