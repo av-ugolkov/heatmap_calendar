@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/data/data_heat_map_calendar.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_day_label.dart';
@@ -23,6 +21,7 @@ class HeatMapCalendarMonth extends StatefulWidget {
   final Color selectColor;
   final Function(DateTime)? onTapHeatMapDay;
 
+  final double spaceMonth;
   final double cellHeight;
   final double opacityDisable;
   final double opacityDayOutOfMonth;
@@ -39,6 +38,7 @@ class HeatMapCalendarMonth extends StatefulWidget {
     this.weekDaysLabels = TimeUtils.defaultWeekLabels,
     this.selectColor = Colors.green,
     this.onTapHeatMapDay,
+    this.spaceMonth = 20.0,
     this.cellHeight = 16.0,
     this.opacityDisable = 0.3,
     this.opacityDayOutOfMonth = 0.7,
@@ -71,41 +71,43 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
           weekDaysLabels: widget.weekDaysLabels,
           selectColor: widget.selectColor,
           onTapHeatMapDay: widget.onTapHeatMapDay,
+          spaceMonth: widget.spaceMonth,
           cellHeight: widget.cellHeight,
           opacityDisable: widget.opacityDisable,
           opacityDayOutOfMonth: widget.opacityDayOutOfMonth,
           mondayFirstDayWeek: widget.mondayFirstDayWeek),
       child: LayoutBuilder(builder: (context, constraints) {
-        var cellWidth = (constraints.maxWidth - 40) / DateTime.daysPerWeek -
-            HeatMapCalendarMonth.margin;
-        return SizedBox(
-          width: (cellWidth + HeatMapCalendarMonth.margin) * 7,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_labelYearMonth),
-              HeatMapDayLabel(
+        var cellWidth = (constraints.maxWidth - widget.spaceMonth * 2) /
+            DateTime.daysPerWeek;
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                margin: EdgeInsets.symmetric(horizontal: widget.spaceMonth),
+                child: Text(_labelYearMonth)),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: widget.spaceMonth),
+              child: HeatMapDayLabel(
                 labelDays: widget.weekDaysLabels,
                 cellWidth: cellWidth,
                 cellHeight: widget.cellHeight,
               ),
-              HeatMapListViewMonths(
-                listMonths: _generateListMonths(cellWidth),
-                heightWidget:
-                    5 * (widget.cellHeight + HeatMapCalendarMonth.margin),
-                callbackEndScroll: (indexMonth) {
-                  log(constraints.maxWidth.toString());
-                  setState(() {
-                    var scrollDate = DateUtils.addMonthsToMonthDate(
-                        widget.startDate, indexMonth);
-                    _labelYearMonth =
-                        '${scrollDate.year} ${widget.monthsLabels[scrollDate.month]}';
-                  });
-                },
-              ),
-            ],
-          ),
+            ),
+            HeatMapListViewMonths(
+              spaceItem: widget.spaceMonth,
+              listMonths: _generateListMonths(cellWidth),
+              heightWidget: 5 * widget.cellHeight,
+              callbackEndScroll: (indexMonth) {
+                setState(() {
+                  var scrollDate = DateUtils.addMonthsToMonthDate(
+                      widget.startDate, indexMonth);
+                  _labelYearMonth =
+                      '${scrollDate.year} ${widget.monthsLabels[scrollDate.month]}';
+                });
+              },
+            ),
+          ],
         );
       }),
     );

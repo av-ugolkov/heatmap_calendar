@@ -24,7 +24,7 @@ class HeatMapMonth extends StatelessWidget {
     var month = _generateMonth(data, firstDateMonth, lastDateMonth, cellWidth);
 
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+      padding: EdgeInsets.fromLTRB(0, 0, data.spaceMonth / 2, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: month,
