@@ -5,12 +5,10 @@ import 'package:heatmap_calendar/heatmap_calendar_month/inherited_heatmap_calend
 
 class HeatMapMonth extends StatelessWidget {
   final int addCountMonth;
-  final double cellWidth;
 
   const HeatMapMonth({
     Key? key,
     required this.addCountMonth,
-    required this.cellWidth,
   }) : super(key: key);
 
   @override
@@ -21,7 +19,8 @@ class HeatMapMonth extends StatelessWidget {
         DateUtils.addMonthsToMonthDate(data.startDate, addCountMonth);
     var lastDateMonth = DateTime(firstDateMonth.year, firstDateMonth.month,
         DateUtils.getDaysInMonth(firstDateMonth.year, firstDateMonth.month));
-    var month = _generateMonth(data, firstDateMonth, lastDateMonth, cellWidth);
+    var month =
+        _generateMonth(data, firstDateMonth, lastDateMonth, data.cellWidth);
 
     return Container(
       padding: EdgeInsets.fromLTRB(0, 0, data.spaceMonth / 2, 0),

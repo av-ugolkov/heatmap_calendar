@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_month.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/inherited_heatmap_calendar_month.dart';
@@ -34,8 +32,7 @@ class _HeatMapListViewMonthsState extends State<HeatMapListViewMonths> {
     var data = InheritedHeatMapCalendarMonth.of(context);
     final maxWidth = MediaQuery.of(context).size.width;
     _monthWidth =
-        (widget.listMonths[0].cellWidth + HeatMapCalendarMonth.margin) *
-                DateTime.daysPerWeek -
+        (data.cellWidth + HeatMapCalendarMonth.margin) * DateTime.daysPerWeek -
             data.spaceMonth;
 
     return SizedBox(
