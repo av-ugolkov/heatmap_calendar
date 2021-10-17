@@ -13,6 +13,7 @@ class DataHeatMapCalendar {
   final Color selectColor;
   final Function(DateTime)? onTapHeatMapDay;
 
+  final double spaceMonth;
   final double cellHeight;
   final double opacityDisable;
   final double opacityDayOutOfMonth;
@@ -28,6 +29,7 @@ class DataHeatMapCalendar {
     required this.weekDaysLabels,
     required this.selectColor,
     required this.onTapHeatMapDay,
+    required this.spaceMonth,
     required this.cellHeight,
     required this.opacityDisable,
     required this.opacityDayOutOfMonth,
