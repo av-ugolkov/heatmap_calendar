@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/data/data_heat_map_calendar.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_calendar_month.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/inherited_heatmap_calendar_month.dart';
-import 'package:heatmap_calendar/heatmap_day.dart';
 
 class HeatMapDay extends StatefulWidget {
   final DateTime currentDay;
@@ -67,13 +66,13 @@ class _HeatMapDayState extends State<HeatMapDay>
         opacity: widget.opacity,
         child: Container(
           alignment: Alignment.center,
-          width: widget.width + HeatMapCalendarMonth.margin,
-          height: data.cellHeight + HeatMapCalendarMonth.margin,
+          width: widget.width,
+          height: data.cellHeight,
           color: _isSelect ? data.selectColor : Colors.white,
           child: Container(
             alignment: Alignment.center,
-            width: widget.width,
-            height: data.cellHeight,
+            width: widget.width - HeatMapCalendarMonth.margin,
+            height: data.cellHeight - HeatMapCalendarMonth.margin,
             color: widget.onTapCallback == null
                 ? widget.disabledColor
                 : _getColorFromThreshold(data),

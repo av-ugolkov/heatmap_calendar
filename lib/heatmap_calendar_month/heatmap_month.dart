@@ -5,12 +5,12 @@ import 'package:heatmap_calendar/heatmap_calendar_month/inherited_heatmap_calend
 
 class HeatMapMonth extends StatelessWidget {
   final int addCountMonth;
-  final double cellWidth;
+  final TapHeatMapDayCallback? callback;
 
   const HeatMapMonth({
     Key? key,
     required this.addCountMonth,
-    required this.cellWidth,
+    required this.callback,
   }) : super(key: key);
 
   @override
@@ -21,9 +21,16 @@ class HeatMapMonth extends StatelessWidget {
         DateUtils.addMonthsToMonthDate(data.startDate, addCountMonth);
     var lastDateMonth = DateTime(firstDateMonth.year, firstDateMonth.month,
         DateUtils.getDaysInMonth(firstDateMonth.year, firstDateMonth.month));
-    var month = _generateMonth(data, firstDateMonth, lastDateMonth, cellWidth);
+    var month =
+        _generateMonth(data, firstDateMonth, lastDateMonth, data.cellWidth);
 
-    return Column(children: month);
+    return Container(
+      padding: EdgeInsets.fromLTRB(0, 0, data.spaceMonth / 2, 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: month,
+      ),
+    );
   }
 
   List<Row> _generateMonth(DataHeatMapCalendar data, DateTime firstDate,
@@ -33,8 +40,6 @@ class HeatMapMonth extends StatelessWidget {
 
     var currentDate = DateTime(firstDate.year, firstDate.month, 1)
         .subtract(Duration(days: firstDayWeek - 1));
-
-    VoidCallback? _callbackSelectDay;
 
     var month = <Row>[];
     var week = <HeatMapDay>[];
@@ -47,13 +52,7 @@ class HeatMapMonth extends StatelessWidget {
 
       var heatmapDay = HeatMapDay(
         currentDay: currentDate,
-        onTapCallback: nonExistDay
-            ? null
-            : (callback, date) {
-                _callbackSelectDay?.call();
-                _callbackSelectDay = callback;
-                data.onTapHeatMapDay?.call(date);
-              },
+        onTapCallback: nonExistDay ? null : callback,
         width: cellWidth,
         opacity: _getOpacity(data, currentDate, firstDate, lastDate),
       );

@@ -21,12 +21,12 @@ class HeatMapCalendarMonth extends StatefulWidget {
   final Color selectColor;
   final Function(DateTime)? onTapHeatMapDay;
 
+  final double spaceMonth;
   final double cellHeight;
   final double opacityDisable;
   final double opacityDayOutOfMonth;
 
   final bool mondayFirstDayWeek;
-  final int marginHorizontal;
 
   const HeatMapCalendarMonth({
     Key? key,
@@ -38,11 +38,11 @@ class HeatMapCalendarMonth extends StatefulWidget {
     this.weekDaysLabels = TimeUtils.defaultWeekLabels,
     this.selectColor = Colors.green,
     this.onTapHeatMapDay,
+    this.spaceMonth = 20.0,
     this.cellHeight = 16.0,
     this.opacityDisable = 0.3,
     this.opacityDayOutOfMonth = 0.7,
     this.mondayFirstDayWeek = true,
-    this.marginHorizontal = 0,
   }) : super(key: key);
 
   @override
@@ -51,51 +51,56 @@ class HeatMapCalendarMonth extends StatefulWidget {
 
 class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
   String _labelYearMonth = '';
+  List<HeatMapMonth> _listMonths = [];
 
   @override
   void initState() {
     super.initState();
     _labelYearMonth =
         '${widget.startDate.year} ${widget.monthsLabels[widget.startDate.month]}';
+    _listMonths = _generateListMonths();
   }
 
   @override
   Widget build(BuildContext context) {
-    return InheritedHeatMapCalendarMonth(
-      data: DataHeatMapCalendar(
-          startDate: widget.startDate,
-          finishDate: widget.finishDate,
-          input: widget.input,
-          colorThresholds: widget.colorThresholds,
-          monthsLabels: widget.monthsLabels,
-          weekDaysLabels: widget.weekDaysLabels,
-          selectColor: widget.selectColor,
-          onTapHeatMapDay: widget.onTapHeatMapDay,
-          cellHeight: widget.cellHeight,
-          opacityDisable: widget.opacityDisable,
-          opacityDayOutOfMonth: widget.opacityDayOutOfMonth,
-          mondayFirstDayWeek: widget.mondayFirstDayWeek,
-          marginHorizontal: widget.marginHorizontal),
-      child: LayoutBuilder(builder: (context, constraints) {
-        var cellWidth = (constraints.maxWidth - widget.marginHorizontal) /
-                DateTime.daysPerWeek -
-            HeatMapCalendarMonth.margin;
-        return SizedBox(
-          width: constraints.maxWidth - widget.marginHorizontal,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        var cellWidth = (constraints.maxWidth - widget.spaceMonth * 2) /
+            DateTime.daysPerWeek;
+        return InheritedHeatMapCalendarMonth(
+          data: DataHeatMapCalendar(
+              startDate: widget.startDate,
+              finishDate: widget.finishDate,
+              input: widget.input,
+              colorThresholds: widget.colorThresholds,
+              monthsLabels: widget.monthsLabels,
+              weekDaysLabels: widget.weekDaysLabels,
+              selectColor: widget.selectColor,
+              spaceMonth: widget.spaceMonth,
+              cellWidth: cellWidth,
+              cellHeight: widget.cellHeight,
+              opacityDisable: widget.opacityDisable,
+              opacityDayOutOfMonth: widget.opacityDayOutOfMonth,
+              mondayFirstDayWeek: widget.mondayFirstDayWeek),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(_labelYearMonth),
-              HeatMapDayLabel(
-                labelDays: widget.weekDaysLabels,
-                cellWidth: cellWidth,
-                cellHeight: widget.cellHeight,
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: widget.spaceMonth),
+                  child: Text(_labelYearMonth)),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: widget.spaceMonth),
+                child: HeatMapDayLabel(
+                  labelDays: widget.weekDaysLabels,
+                  cellWidth: cellWidth,
+                  cellHeight: widget.cellHeight,
+                ),
               ),
               HeatMapListViewMonths(
-                listMonths: _generateListMonths(cellWidth),
-                heightWidget:
-                    5 * (widget.cellHeight + HeatMapCalendarMonth.margin),
+                spaceItem: widget.spaceMonth,
+                listMonths: _listMonths,
+                heightWidget: 5 * widget.cellHeight,
                 callbackEndScroll: (indexMonth) {
                   setState(() {
                     var scrollDate = DateUtils.addMonthsToMonthDate(
@@ -108,11 +113,11 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
             ],
           ),
         );
-      }),
+      },
     );
   }
 
-  List<HeatMapMonth> _generateListMonths(double cellWidth) {
+  List<HeatMapMonth> _generateListMonths() {
     final countMonth =
         DateUtils.monthDelta(widget.startDate, widget.finishDate);
 
@@ -121,10 +126,18 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
     for (var i = 0; i <= countMonth; ++i) {
       var month = HeatMapMonth(
         addCountMonth: i,
-        cellWidth: cellWidth,
+        callback: _selectDay,
       );
       listMonths.add(month);
     }
     return listMonths;
+  }
+
+  VoidCallback? _callbackSelectDay;
+
+  void _selectDay(VoidCallback callback, DateTime date) {
+    _callbackSelectDay?.call();
+    _callbackSelectDay = callback;
+    widget.onTapHeatMapDay?.call(date);
   }
 }

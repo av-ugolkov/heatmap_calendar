@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+typedef TapHeatMapDayCallback = void Function(VoidCallback, DateTime);
+
 class DataHeatMapCalendar {
   final DateTime startDate;
   final DateTime finishDate;
@@ -11,14 +13,14 @@ class DataHeatMapCalendar {
   final List<String> weekDaysLabels;
 
   final Color selectColor;
-  final Function(DateTime)? onTapHeatMapDay;
 
+  final double spaceMonth;
+  final double cellWidth;
   final double cellHeight;
   final double opacityDisable;
   final double opacityDayOutOfMonth;
 
   final bool mondayFirstDayWeek;
-  final int marginHorizontal;
 
   DataHeatMapCalendar({
     required this.startDate,
@@ -28,11 +30,11 @@ class DataHeatMapCalendar {
     required this.monthsLabels,
     required this.weekDaysLabels,
     required this.selectColor,
-    required this.onTapHeatMapDay,
+    required this.spaceMonth,
+    required this.cellWidth,
     required this.cellHeight,
     required this.opacityDisable,
     required this.opacityDayOutOfMonth,
     required this.mondayFirstDayWeek,
-    required this.marginHorizontal,
   });
 }

@@ -91,9 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
             onTapHeatMapDay: (tapDate) {
               log(tapDate.toString());
             },
+            spaceMonth: 20,
             cellHeight: 28,
             weekDaysLabels: TimeUtils.defaultWeekLabels,
-            marginHorizontal: 20,
           ),
         ],
       ),
