@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-typedef TapHeatMapDayCallback = void Function(VoidCallback, DateTime);
+import 'package:heatmap_calendar/data/data_heat_map_calendar.dart';
 
 class HeatMapDay extends StatefulWidget {
   final int value;

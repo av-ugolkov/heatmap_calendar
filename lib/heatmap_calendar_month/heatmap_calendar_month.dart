@@ -76,7 +76,6 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
               monthsLabels: widget.monthsLabels,
               weekDaysLabels: widget.weekDaysLabels,
               selectColor: widget.selectColor,
-              onTapHeatMapDay: widget.onTapHeatMapDay,
               spaceMonth: widget.spaceMonth,
               cellWidth: cellWidth,
               cellHeight: widget.cellHeight,
@@ -125,9 +124,20 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
     var listMonths = <HeatMapMonth>[];
 
     for (var i = 0; i <= countMonth; ++i) {
-      var month = HeatMapMonth(addCountMonth: i);
+      var month = HeatMapMonth(
+        addCountMonth: i,
+        callback: _selectDay,
+      );
       listMonths.add(month);
     }
     return listMonths;
+  }
+
+  VoidCallback? _callbackSelectDay;
+
+  void _selectDay(VoidCallback callback, DateTime date) {
+    _callbackSelectDay?.call();
+    _callbackSelectDay = callback;
+    widget.onTapHeatMapDay?.call(date);
   }
 }
