@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/data/data_heat_map_calendar.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/heatmap_calendar_month.dart';
 import 'package:heatmap_calendar/heatmap_calendar_month/inherited_heatmap_calendar_month.dart';
-import 'package:heatmap_calendar/heatmap_day.dart';
 
 class HeatMapDay extends StatefulWidget {
   final DateTime currentDay;

@@ -5,10 +5,12 @@ import 'package:heatmap_calendar/heatmap_calendar_month/inherited_heatmap_calend
 
 class HeatMapMonth extends StatelessWidget {
   final int addCountMonth;
+  final TapHeatMapDayCallback? callback;
 
   const HeatMapMonth({
     Key? key,
     required this.addCountMonth,
+    required this.callback,
   }) : super(key: key);
 
   @override
@@ -39,8 +41,6 @@ class HeatMapMonth extends StatelessWidget {
     var currentDate = DateTime(firstDate.year, firstDate.month, 1)
         .subtract(Duration(days: firstDayWeek - 1));
 
-    VoidCallback? _callbackSelectDay;
-
     var month = <Row>[];
     var week = <HeatMapDay>[];
     for (var i = 0; i < 35; ++i) {
@@ -52,13 +52,7 @@ class HeatMapMonth extends StatelessWidget {
 
       var heatmapDay = HeatMapDay(
         currentDay: currentDate,
-        onTapCallback: nonExistDay
-            ? null
-            : (callback, date) {
-                _callbackSelectDay?.call();
-                _callbackSelectDay = callback;
-                data.onTapHeatMapDay?.call(date);
-              },
+        onTapCallback: nonExistDay ? null : callback,
         width: cellWidth,
         opacity: _getOpacity(data, currentDate, firstDate, lastDate),
       );
