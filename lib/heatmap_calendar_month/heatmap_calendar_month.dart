@@ -102,12 +102,10 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
                 listMonths: _listMonths,
                 heightWidget: 5 * widget.cellHeight,
                 callbackEndScroll: (indexMonth) {
-                  setState(() {
-                    var scrollDate = DateUtils.addMonthsToMonthDate(
-                        widget.startDate, indexMonth);
-                    _labelYearMonth =
-                        '${scrollDate.year} ${widget.monthsLabels[scrollDate.month]}';
-                  });
+                  var scrollDate = DateUtils.addMonthsToMonthDate(
+                      widget.startDate, indexMonth);
+                  _labelYearMonth =
+                      '${scrollDate.year} ${widget.monthsLabels[scrollDate.month]}';
                 },
               ),
             ],

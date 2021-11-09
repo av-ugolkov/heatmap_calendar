@@ -30,36 +30,38 @@ class _HeatMapListViewMonthsState extends State<HeatMapListViewMonths> {
   @override
   Widget build(BuildContext context) {
     var data = InheritedHeatMapCalendarMonth.of(context);
-    final maxWidth = MediaQuery.of(context).size.width;
     _monthWidth =
         (data.cellWidth + HeatMapCalendarMonth.margin) * DateTime.daysPerWeek -
             data.spaceMonth;
 
-    return SizedBox(
-      height: widget.heightWidget,
-      child: NotificationListener(
-        child: ListView.builder(
-          controller: _scrollController,
-          physics: const ClampingScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.symmetric(horizontal: widget.spaceItem),
-          itemCount: widget.listMonths.length,
-          itemBuilder: (context, index) {
-            return widget.listMonths[index];
+    return LayoutBuilder(builder: (context, constraints) {
+      var maxWidth = constraints.maxWidth;
+      return SizedBox(
+        height: widget.heightWidget,
+        child: NotificationListener(
+          child: ListView.builder(
+            controller: _scrollController,
+            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: widget.spaceItem),
+            itemCount: widget.listMonths.length,
+            itemBuilder: (context, index) {
+              return widget.listMonths[index];
+            },
+          ),
+          onNotification: (notification) {
+            if (!_autoScroll && notification is ScrollEndNotification) {
+              _autoScroll = true;
+              var scroll = (_scrollController.offset / _monthWidth).round();
+              var scrollPosition = scroll * (maxWidth - widget.spaceItem * 1.5);
+              _animScroll(scrollPosition);
+              widget.callbackEndScroll.call(scroll);
+            }
+            return _autoScroll;
           },
         ),
-        onNotification: (notification) {
-          if (!_autoScroll && notification is ScrollEndNotification) {
-            _autoScroll = true;
-            var scroll = (_scrollController.offset / _monthWidth).round();
-            var scrollPosition = scroll * (maxWidth - widget.spaceItem * 1.5);
-            _animScroll(scrollPosition);
-            widget.callbackEndScroll.call(scroll);
-          }
-          return _autoScroll;
-        },
-      ),
-    );
+      );
+    });
   }
 
   _animScroll(double scrollPosition) {

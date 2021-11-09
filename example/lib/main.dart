@@ -70,30 +70,33 @@ class _MyHomePageState extends State<MyHomePage> {
               log(tapDate.toString());
             },
           ),
-          HeatMapCalendarMonth(
-            startDate: DateTime(2021, 9, 14),
-            finishDate: DateTime(2022, 9, 21),
-            input: {
-              DateUtils.dateOnly(
-                  DateTime.now().subtract(const Duration(days: 3))): 5,
-              DateUtils.dateOnly(
-                  DateTime.now().subtract(const Duration(days: 2))): 35,
-              DateUtils.dateOnly(
-                  DateTime.now().subtract(const Duration(days: 1))): 14,
-              DateUtils.dateOnly(DateTime.now()): 5,
-            },
-            colorThresholds: {
-              1: Colors.green.shade100,
-              10: Colors.green.shade300,
-              30: Colors.green.shade500
-            },
-            selectColor: Colors.orange,
-            onTapHeatMapDay: (tapDate) {
-              log(tapDate.toString());
-            },
-            spaceMonth: 20,
-            cellHeight: 28,
-            weekDaysLabels: TimeUtils.defaultWeekLabels,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: HeatMapCalendarMonth(
+              startDate: DateTime(2021, 9, 14),
+              finishDate: DateTime(2022, 9, 21),
+              input: {
+                DateUtils.dateOnly(
+                    DateTime.now().subtract(const Duration(days: 3))): 5,
+                DateUtils.dateOnly(
+                    DateTime.now().subtract(const Duration(days: 2))): 35,
+                DateUtils.dateOnly(
+                    DateTime.now().subtract(const Duration(days: 1))): 14,
+                DateUtils.dateOnly(DateTime.now()): 5,
+              },
+              colorThresholds: {
+                1: Colors.green.shade100,
+                10: Colors.green.shade300,
+                30: Colors.green.shade500
+              },
+              selectColor: Colors.orange,
+              onTapHeatMapDay: (tapDate) {
+                log(tapDate.toString());
+              },
+              spaceMonth: 20,
+              cellHeight: 28,
+              weekDaysLabels: TimeUtils.defaultWeekLabels,
+            ),
           ),
         ],
       ),
