@@ -25,7 +25,6 @@ class HeatMapListViewMonths extends StatefulWidget {
 class _HeatMapListViewMonthsState extends State<HeatMapListViewMonths> {
   bool _autoScroll = false;
   double _monthWidth = 0.0;
-  final _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +35,19 @@ class _HeatMapListViewMonthsState extends State<HeatMapListViewMonths> {
 
     return LayoutBuilder(builder: (context, constraints) {
       var maxWidth = constraints.maxWidth;
+      var offset = 0.0;
+      if (data.scrollToDate != null) {
+        offset =
+            (data.scrollToDate!.month - data.startDate.month) * _monthWidth +
+                HeatMapCalendarMonth.margin;
+      }
+      ScrollController scrollController =
+          ScrollController(initialScrollOffset: offset);
       return SizedBox(
         height: widget.heightWidget,
         child: NotificationListener(
           child: ListView.builder(
-            controller: _scrollController,
+            controller: scrollController,
             physics: const ClampingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: widget.spaceItem),
@@ -52,9 +59,9 @@ class _HeatMapListViewMonthsState extends State<HeatMapListViewMonths> {
           onNotification: (notification) {
             if (!_autoScroll && notification is ScrollEndNotification) {
               _autoScroll = true;
-              var scroll = (_scrollController.offset / _monthWidth).round();
+              var scroll = (scrollController.offset / _monthWidth).round();
               var scrollPosition = scroll * (maxWidth - widget.spaceItem * 1.5);
-              _animScroll(scrollPosition);
+              _animScroll(scrollController, scrollPosition);
               widget.callbackEndScroll.call(scroll);
             }
             return _autoScroll;
@@ -64,12 +71,12 @@ class _HeatMapListViewMonthsState extends State<HeatMapListViewMonths> {
     });
   }
 
-  _animScroll(double scrollPosition) {
+  _animScroll(ScrollController scrollController, double scrollPosition) {
     Future.delayed(Duration.zero, () {
-      _scrollController
+      scrollController
           .animateTo(scrollPosition,
               duration: const Duration(milliseconds: 300), curve: Curves.linear)
-          .whenComplete(() => _autoScroll = false);
+          .whenComplete(() => {_autoScroll = false});
     });
   }
 }

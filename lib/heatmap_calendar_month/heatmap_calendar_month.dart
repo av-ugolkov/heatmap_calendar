@@ -20,6 +20,7 @@ class HeatMapCalendarMonth extends StatefulWidget {
 
   final Color selectColor;
   final Function(DateTime)? onTapHeatMapDay;
+  final DateTime? scrollToDate;
 
   final double spaceMonth;
   final double cellHeight;
@@ -43,6 +44,7 @@ class HeatMapCalendarMonth extends StatefulWidget {
     this.opacityDisable = 0.3,
     this.opacityDayOutOfMonth = 0.7,
     this.mondayFirstDayWeek = true,
+    this.scrollToDate,
   }) : super(key: key);
 
   @override
@@ -71,6 +73,7 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
           data: DataHeatMapCalendar(
               startDate: widget.startDate,
               finishDate: widget.finishDate,
+              scrollToDate: widget.scrollToDate,
               input: widget.input,
               colorThresholds: widget.colorThresholds,
               monthsLabels: widget.monthsLabels,

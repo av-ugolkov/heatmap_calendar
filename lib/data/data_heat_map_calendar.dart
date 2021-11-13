@@ -5,6 +5,7 @@ typedef TapHeatMapDayCallback = void Function(VoidCallback, DateTime);
 class DataHeatMapCalendar {
   final DateTime startDate;
   final DateTime finishDate;
+  final DateTime? scrollToDate;
 
   final Map<DateTime, int> input;
   final Map<int, Color> colorThresholds;
@@ -25,6 +26,7 @@ class DataHeatMapCalendar {
   DataHeatMapCalendar({
     required this.startDate,
     required this.finishDate,
+    required this.scrollToDate,
     required this.input,
     required this.colorThresholds,
     required this.monthsLabels,
