@@ -96,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               spaceMonth: 20,
               cellHeight: 28,
               weekDaysLabels: TimeUtils.defaultWeekLabels,
+              scrollToDate: DateTime.now(),
             ),
           ),
         ],
