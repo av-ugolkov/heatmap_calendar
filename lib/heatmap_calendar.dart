@@ -90,7 +90,6 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                 monthLabels: widget.monthsLabels,
                 minColumnsToCreate:
                     _getMinColumnsToCreate(constraints.maxWidth) - 1,
-                date: DateTime.now(),
                 startDate: widget.startDate,
                 finishDate: widget.finishDate,
                 mondayFirstDayWeek: widget.mondayfirstDayWeek,

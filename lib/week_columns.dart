@@ -16,7 +16,6 @@ class WeekColumns extends StatelessWidget {
   final int minColumnsToCreate;
   final DateTime startDate;
   final DateTime finishDate;
-  final DateTime date;
   final bool mondayFirstDayWeek;
   final Function(DateTime)? onTapHeatMapDay;
   final TextStyle? textStyleDate;
@@ -32,7 +31,6 @@ class WeekColumns extends StatelessWidget {
     required this.minColumnsToCreate,
     required this.startDate,
     required this.finishDate,
-    required this.date,
     required this.mondayFirstDayWeek,
     required this.activeDayColor,
     required this.disabledDayColor,
