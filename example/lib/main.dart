@@ -33,6 +33,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final DateTime _startDate = DateTime(2022, 9, 14);
+  DateTime _finishDate = DateTime(2022, 9, 21);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: HeatMapCalendarMonth(
-              startDate: DateTime(2021, 9, 14),
-              finishDate: DateTime(2022, 9, 21),
+              startDate: _startDate,
+              finishDate: _finishDate,
               input: {
                 DateUtils.dateOnly(
                     DateTime.now().subtract(const Duration(days: 3))): 5,
@@ -99,6 +101,19 @@ class _MyHomePageState extends State<MyHomePage> {
               scrollToDate: DateTime.now(),
             ),
           ),
+          ElevatedButton(
+            child: const Text('Select Date'),
+            onPressed: () async {
+              var datePicker = await showDatePicker(
+                  context: context,
+                  initialDate: _finishDate,
+                  firstDate: _startDate,
+                  lastDate: DateTime(9999));
+              setState(() {
+                _finishDate = datePicker ?? _finishDate;
+              });
+            },
+          )
         ],
       ),
     );

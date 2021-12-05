@@ -64,6 +64,15 @@ class _HeatMapCalendarMonthState extends State<HeatMapCalendarMonth> {
   }
 
   @override
+  void didUpdateWidget(covariant HeatMapCalendarMonth oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.startDate != widget.startDate ||
+        oldWidget.finishDate != widget.finishDate) {
+      _listMonths = _generateListMonths();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
